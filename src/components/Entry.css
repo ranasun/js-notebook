@@ -1,0 +1,29 @@
+.entry-container {
+    position: relative;
+    margin: 10px 0;
+}
+
+.entry-block {
+    display: flex;
+    align-items: center;
+}
+
+.entry-id {
+    width: 50px;
+    margin-right: 10px;
+    text-align: right;
+    font-family: monospace;
+}
+
+.editor-preview {
+    width: calc(100% - 50px);
+}
+
+.button-container {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    display: flex;
+    flex-direction: row;
+    gap: 3px;
+}
