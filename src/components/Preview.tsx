@@ -14,73 +14,88 @@ const html = `
                     margin: 0;
                     padding: 0;
                 }
+                .__error {
+                    background-color: #ffdddd; 
+                    padding: 10px; 
+                    font-family: monospace;
+                }
             </style>
-        </head>
-        <body>
-            <div id="root"></div>
             <script>
+                let id;
+
                 const handleError = (err) => {
                     const root = document.getElementById('root');
-                    root.innerHTML = '<div style="background-color: #ffdddd; padding: 10px; font-family: monospace;">'+err+'</div>';
+                    root.innerHTML = '<div class="__error">'+err+'</div>';
                     console.error(err);
+                }
+
+                const updateSize = () => {
+                    const height = window.document.getElementsByTagName("html")[0].scrollHeight;
+                    window.parent.postMessage({id, height }, '*');
                 }
 
                 window.addEventListener('error', (event) => {
                     event.preventDefault();
                     handleError(event.error);
+                    updateSize(event);
                 });
 
                 window.addEventListener('message', (event) => {
+                    id = event.data.id;
                     try {
-                        const body = document.querySelector('body');
-                        const script = document.createElement('script');
-                        script.text = event.data.code;
-                        body.append(script);
-                        // eval(event.data.code);
+                        if (event.data.error !== '') throw event.data.error;
+                        eval(event.data.code);
                     } catch(err) {
                         handleError(err);
                     }
-
-                    const height = window.document.getElementsByTagName("html")[0].scrollHeight;
-                    window.parent.postMessage({id: event.data.id, height }, '*');
+                    updateSize();
                 }, false);
-
-
             </script>
+        </head>
+        <body>
+            <div id="root"></div>
         </body>
     </html>
 `
 
 const Preview: React.FC<PreviewProp> = ({ code, error, id }) => {
     const iframe = useRef<any>();
-    const [height, setHeight] = useState('0px');
+    const [height, setHeight] = useState('');
 
     useEffect(() => {
+        setHeight('0px');
         iframe.current.srcdoc = html;
-
         setTimeout(() => {
-            iframe.current.contentWindow.postMessage({ id, code }, '*');
-        }, 100)
+            iframe.current.contentWindow.postMessage({ id, code, error }, '*');
+        }, 50)
 
     }, [code])
 
     useEffect(() => {
-        window.addEventListener('message', listener, false)
+        window.addEventListener('message', listener, false);
+
         return () => {
             window.removeEventListener('message', listener, false);
         }
     }, []);
 
     function listener(event: any) {
+        console.log('preview message event');
         if (event.data.id === id) {
-            console.log(id, event)
             setHeight(event.data.height + 'px');
         }
     }
 
     return (
         <>
-            <iframe ref={iframe} style={{ border: 0, marginTop: '5px' }} sandbox='allow-scripts' srcDoc={html} height={height} width="100%"></iframe>
+            <iframe
+                ref={iframe}
+                style={{ border: 0, marginTop: '5px' }}
+                sandbox='allow-scripts'
+                srcDoc={html}
+                height={height}
+                width="100%">
+            </iframe>
         </>
     );
 }
