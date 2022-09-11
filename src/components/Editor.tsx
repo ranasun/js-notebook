@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 import { keymap } from "@codemirror/view"
 import { javascript } from '@codemirror/lang-javascript';
+import { markdown } from '@codemirror/lang-markdown';
 import { EventEmitter, Events } from '../events/events';
 import Theme from '../theme/codemirror-theme'
 
@@ -37,7 +38,18 @@ const Editor: React.FC<EditorProps> = ({ id, onSubmit, onFocus }) => {
         return true;
     }
 
-    const extensions = [
+    const js = [
+        javascript({ jsx: true }),
+        keymap.of([
+            {
+                key: 'Shift-Enter',
+                preventDefault: true,
+                run: runCommand,
+            },
+        ])
+    ];
+
+    const md = [
         javascript({ jsx: true }),
         keymap.of([
             {
@@ -59,7 +71,7 @@ const Editor: React.FC<EditorProps> = ({ id, onSubmit, onFocus }) => {
             className='code-editor'
             ref={editor}
             value={input}
-            extensions={extensions}
+            extensions={js}
             onChange={onChange}
             onCreateEditor={onCreate}
             onFocus={onFocus}

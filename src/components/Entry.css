@@ -1,6 +1,6 @@
 .entry-container {
     position: relative;
-    margin-top: 5px;
+    margin-top: 15px;
 }
 
 .entry-block {
@@ -21,9 +21,22 @@
 
 .button-container {
     position: absolute;
-    top: 3px;
-    right: 3px;
+    top: 2px;
+    right: 2px;
     display: flex;
     flex-direction: row;
-    gap: 3px;
+    gap: 2px;
+}
+
+.entry-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+}
+
+.entry-button:hover {
+    background: #ccc;
 }

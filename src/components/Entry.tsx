@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { EventEmitter, Events } from '../events/events';
 import { bundle } from '../bundler';
+import { ArrowDown, ArrowUp, Iconoir, MoveUp, PlayOutline, Trash } from 'iconoir-react';
 import Editor from "./Editor";
 import Preview from "./Preview";
 import './Entry.css';
@@ -46,10 +47,10 @@ const Entry: React.FC<EntryProp> = ({ id }) => {
                 </div>
             </div>
             <div className="button-container">
-                <button onClick={handleRun}>Run</button>
-                <button onClick={handleUp}>Up</button>
-                <button onClick={handleDown}>Down</button>
-                <button onClick={handleRemove}>Remove</button>
+                <div className="entry-button" onClick={handleRun}><PlayOutline color="gray" fontSize={12} /></div>
+                <div className="entry-button" onClick={handleUp}><ArrowUp color="gray" fontSize={12} /></div>
+                <div className="entry-button" onClick={handleDown}><ArrowDown color="gray" fontSize={12} /></div>
+                <div className="entry-button" onClick={handleRemove}><Trash color="gray" fontSize={12} /></div>
             </div>
         </div>
     );

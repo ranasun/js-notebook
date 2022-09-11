@@ -8,7 +8,6 @@ import './App.css';
 const App = () => {
     const [currentId, setCurrentId] = useState<number>(1);
     const [entries, setEntries] = useState<any[]>([<Entry key={Date.now()} id={currentId} />]);
-    const [fullCode, setFullCode] = useState({});
 
     EventEmitter.unsubscribe(Events.RUN);
     EventEmitter.unsubscribe(Events.MOVE_UP);
@@ -17,10 +16,6 @@ const App = () => {
 
 
     EventEmitter.subscribe(Events.RUN, ({ id, input }) => {
-        const obj: any = { ...fullCode };
-        obj[id] = input;
-        setFullCode(obj);
-        console.log(fullCode);
         const position = entries.findIndex(entry => entry.props.id === id);
         if (position < entries.length - 1) {
             setEntries(entries);
