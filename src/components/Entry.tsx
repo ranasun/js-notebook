@@ -42,7 +42,7 @@ const Entry: React.FC<EntryProp> = ({ id }) => {
                 <div className="entry-id">[{id}]:</div>
                 <div className='editor-preview'>
                     <Editor onSubmit={onSubmit} id={id} />
-                    <Preview code={code} error={error} />
+                    <Preview code={code} error={error} id={id} />
                 </div>
             </div>
             <div className="button-container">
