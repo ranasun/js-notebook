@@ -7,14 +7,16 @@ import { EventEmitter, Events } from '../events/events';
 import Theme from '../theme/codemirror-theme'
 
 interface EditorProps {
-    id?: number,
-    onSubmit?(code: string): void
-    onFocus?(): void
+    id?: number;
+    value?: string;
+    isMarkdown: boolean;
+    onSubmit?(code: string): void;
+    onFocus?(): void;
 }
 
-const Editor: React.FC<EditorProps> = ({ id, onSubmit, onFocus }) => {
+const Editor: React.FC<EditorProps> = ({ id, value, onSubmit, onFocus, isMarkdown }) => {
     const editor = useRef<any>();
-    const [input, setInput] = useState('');
+    const [input, setInput] = useState<any>(value);
 
     useEffect(() => {
         EventEmitter.subscribe(Events.SET_FOCUS, (entry_id) => {
@@ -50,7 +52,7 @@ const Editor: React.FC<EditorProps> = ({ id, onSubmit, onFocus }) => {
     ];
 
     const md = [
-        javascript({ jsx: true }),
+        markdown(),
         keymap.of([
             {
                 key: 'Shift-Enter',
@@ -71,7 +73,7 @@ const Editor: React.FC<EditorProps> = ({ id, onSubmit, onFocus }) => {
             className='code-editor'
             ref={editor}
             value={input}
-            extensions={js}
+            extensions={isMarkdown ? md : js}
             onChange={onChange}
             onCreateEditor={onCreate}
             onFocus={onFocus}

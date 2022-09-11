@@ -17,6 +17,7 @@
     "esbuild-wasm": "^0.15.7",
     "iconoir-react": "^5.3.0",
     "localforage": "^1.10.0",
+    "markdown-to-jsx": "^7.1.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.2"
