@@ -5,12 +5,12 @@
 
 .entry-block {
     display: flex;
-    align-items: center;
+    align-items: start;
 }
 
 .entry-id {
     width: 50px;
-    margin-right: 10px;
+    margin: 5px 10px 0 0;
     text-align: right;
     font-family: monospace;
 }

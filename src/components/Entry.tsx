@@ -1,7 +1,8 @@
 import { useState, useRef } from 'react';
+import { EventEmitter, Events } from '../events/events';
+import { bundle } from '../bundler';
 import Editor from "./Editor";
 import Preview from "./Preview";
-import { EventEmitter, Events } from '../events/events';
 import './Entry.css';
 
 interface EntryProp {
@@ -10,11 +11,13 @@ interface EntryProp {
 
 const Entry: React.FC<EntryProp> = ({ id }) => {
     const [code, setCode] = useState('');
+    const [error, setError] = useState('');
 
-    function onSubmit(input: string) {
-        console.log('submitted from', id);
-        setCode(input);
-        EventEmitter.dispatch(Events.RUN, id);
+    async function onSubmit(input: string) {
+        const output = await bundle(input);
+        setCode(output.code + '//' + Date.now());
+        setError(output.err);
+        EventEmitter.dispatch(Events.RUN, { id, input });
     }
 
     function handleRun() {
@@ -39,7 +42,7 @@ const Entry: React.FC<EntryProp> = ({ id }) => {
                 <div className="entry-id">[{id}]:</div>
                 <div className='editor-preview'>
                     <Editor onSubmit={onSubmit} id={id} />
-                    <Preview input={code} />
+                    <Preview code={code} error={error} />
                 </div>
             </div>
             <div className="button-container">

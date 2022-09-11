@@ -8,18 +8,26 @@ import './App.css';
 const App = () => {
     const [currentId, setCurrentId] = useState<number>(1);
     const [entries, setEntries] = useState<any[]>([<Entry key={Date.now()} id={currentId} />]);
+    const [fullCode, setFullCode] = useState({});
 
     EventEmitter.unsubscribe(Events.RUN);
+    EventEmitter.unsubscribe(Events.MOVE_UP);
+    EventEmitter.unsubscribe(Events.MOVE_DOWN);
+    EventEmitter.unsubscribe(Events.REMOVE);
 
-    EventEmitter.subscribe(Events.RUN, (id) => {
+
+    EventEmitter.subscribe(Events.RUN, ({ id, input }) => {
+        const obj: any = { ...fullCode };
+        obj[id] = input;
+        setFullCode(obj);
+        console.log(fullCode);
         const position = entries.findIndex(entry => entry.props.id === id);
         if (position < entries.length - 1) {
             setEntries(entries);
-            console.log(entries[position + 1].props.id);
             EventEmitter.dispatch(Events.SET_FOCUS, entries[position + 1].props.id);
         } else {
             setEntries([...entries, <Entry key={Date.now()} id={currentId + 1} />]);
-            setCurrentId(currentId + 1);
+            setCurrentId(() => currentId + 1);
         }
     });
 
@@ -48,11 +56,12 @@ const App = () => {
         setEntries(filteredEntries);
     });
 
+
     return (
         <div>
             <StrictMode>
                 <Notebook>
-                    {entries}
+                    {entries.map(e => e)}
                 </Notebook>
             </StrictMode>
         </div>
