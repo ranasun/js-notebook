@@ -11,9 +11,8 @@ const App = () => {
 
     EventEmitter.unsubscribe(Events.RUN);
     EventEmitter.unsubscribe(Events.MOVE_UP);
-    EventEmitter.unsubscribe(Events.MOVE_DOWN);
+    EventEmitter.unsubscribe(Events.MOVE_DOWN)
     EventEmitter.unsubscribe(Events.REMOVE);
-
 
     EventEmitter.subscribe(Events.RUN, ({ id, input }) => {
         const position = entries.findIndex(entry => entry.props.id === id);
@@ -50,7 +49,6 @@ const App = () => {
         const filteredEntries = entries.filter(entry => entry.props.id !== entry_id);
         setEntries(filteredEntries);
     });
-
 
     return (
         <div>

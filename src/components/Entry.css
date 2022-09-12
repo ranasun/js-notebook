@@ -1,6 +1,13 @@
 .entry-container {
     position: relative;
     margin-top: 15px;
+    padding-left: 4px;
+    outline: 0px;
+}
+
+.entry-container.focus{
+    padding-left: 0px;
+    border-left: 4px solid lightblue;
 }
 
 .entry-block {

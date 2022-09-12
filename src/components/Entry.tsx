@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { EventEmitter, Events } from '../events/events';
 import { bundle } from '../bundler';
-import Markdown from 'markdown-to-jsx';
+import MarkdownPreview from './MarkdownPreview';
 import { ArrowDown, ArrowUp, CodeBracketsSquare, PlayOutline, TextAlt, Trash } from 'iconoir-react';
 import Editor from "./Editor";
 import Preview from "./Preview";
@@ -17,6 +17,7 @@ const Entry: React.FC<EntryProp> = ({ id }) => {
     const [markdown, setMarkdown] = useState(false);
     const [isHidden, setIsHidden] = useState(false);
     const [input, setInput] = useState('');
+    const [hasFocus, setHasFocus] = useState(false);
 
     async function onSubmit(input: string) {
         if (markdown) {
@@ -57,14 +58,24 @@ const Entry: React.FC<EntryProp> = ({ id }) => {
         setIsHidden(false);
     }
 
+    function handleFocus() {
+        setHasFocus(true);
+    }
+
+    function handleBlur() {
+        setHasFocus(false);
+    }
+
+    const className = `entry-container ${hasFocus ? 'focus' : ''}`;
+
     return (
-        <div className='entry-container'>
+        <div className={className} tabIndex={id} onFocus={handleFocus} onBlur={handleBlur}>
             <div className="entry-block">
                 <div className="entry-id" style={{ opacity: markdown ? 0 : 1 }}>[{id}]:</div>
                 <div className='editor-preview' onDoubleClick={handleDoubleClick}>
-                    {isHidden && <Markdown>{input}</Markdown>}
+                    {isHidden && <MarkdownPreview>{input}</MarkdownPreview>}
                     {!isHidden && <Editor value={input} onSubmit={onSubmit} id={id} isMarkdown={markdown} />}
-                    <Preview code={markdown ? '' : code} error={error} id={id} />
+                    {!isHidden && <Preview code={markdown ? '' : code} error={error} id={id} />}
                 </div>
             </div>
             <div className="button-container" >
