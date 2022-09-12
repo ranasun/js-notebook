@@ -3,8 +3,8 @@ import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 import { keymap } from "@codemirror/view"
 import { javascript } from '@codemirror/lang-javascript';
 import { markdown } from '@codemirror/lang-markdown';
-import { EventEmitter, Events } from '../events/events';
-import Theme from '../theme/codemirror-theme'
+import { EventEmitter, Events } from '../../../common/events';
+import Theme from './codemirror-theme'
 
 interface EditorProps {
     id?: number;
@@ -14,7 +14,7 @@ interface EditorProps {
     onFocus?(): void;
 }
 
-const Editor: React.FC<EditorProps> = ({ id, value, onSubmit, onFocus, isMarkdown }) => {
+const EntryEditor: React.FC<EditorProps> = ({ id, value, onSubmit, onFocus, isMarkdown }) => {
     const editor = useRef<any>();
     const [input, setInput] = useState<any>(value);
 
@@ -83,4 +83,4 @@ const Editor: React.FC<EditorProps> = ({ id, value, onSubmit, onFocus, isMarkdow
     );
 }
 
-export default Editor;
+export default EntryEditor;

@@ -58,7 +58,7 @@ const html = `
     </html>
 `
 
-const Preview: React.FC<PreviewProp> = ({ code, error, id }) => {
+const EntryPreview: React.FC<PreviewProp> = ({ code, error, id }) => {
     const iframe = useRef<any>();
     const [height, setHeight] = useState('');
 
@@ -100,4 +100,4 @@ const Preview: React.FC<PreviewProp> = ({ code, error, id }) => {
     );
 }
 
-export default Preview;
+export default EntryPreview;
