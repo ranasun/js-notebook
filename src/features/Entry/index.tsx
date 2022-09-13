@@ -23,6 +23,7 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
     const inFocus = useSelector((state: RootState) => state.notebook.inFocus);
     const [code, setCode] = useState('');
     const [error, setError] = useState('');
+    const [hasFocus, setHasFocus] = useState(false);
     const [isMarkdown, setIsMarkdown] = useState(false);
     const dispatch = useDispatch()
     const ref = React.createRef<any>();
@@ -57,6 +58,14 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
         }
     }
 
+    useEffect(() => {
+        if (inFocus === entryId && ref.current.view) {
+            // setTimeout(() => {
+            ref.current.view.focus();
+            // }, 10)
+        }
+    }, [inFocus]);
+
     function moveEntryUp() {
         dispatch(move({ entryId, direction: 'up' }));
     }
@@ -76,11 +85,13 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
     }
 
     function onFocus() {
-        dispatch(setFocus(entryId));
-        // ref.current.view.focus();
+        setHasFocus(true);
+    }
+    function onBlur() {
+        setHasFocus(false);
     }
 
-    const className = `entry-container ${inFocus === entryId ? 'focus' : ''}`;
+    const className = `entry-container ${hasFocus ? 'focus' : ''}`;
 
     const iconProps = {
         color: "gray",
@@ -89,7 +100,7 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
 
 
     return (
-        <div className={className} tabIndex={index} onFocus={onFocus} onDoubleClick={handleDoubleClick}>
+        <div className={className} tabIndex={index} onFocus={onFocus} onBlur={onBlur} onDoubleClick={handleDoubleClick}>
             <div className="entry-block">
                 <div className="entry-id">{!isMarkdown && `[${index}]:`}</div>
                 <div className='editor-preview' >
