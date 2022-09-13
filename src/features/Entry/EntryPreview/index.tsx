@@ -1,24 +1,21 @@
-import { useState } from 'react';
-
 import CodePreview from './CodePreview';
 import TextPreview from './TextPreview';
 
 interface PreviewProp {
-    data: string;
+    code: string;
+    error: string;
     type: string;
-    entryId: number;
+    entryId: string;
 }
 
 
-const EntryPreview: React.FC<PreviewProp> = ({ entryId, data, type, }) => {
-    const [code, setCode] = useState('');
-    const [error, setError] = useState('');
+const EntryPreview: React.FC<PreviewProp> = ({ entryId, code, error, type, }) => {
 
     return (
         <div>
             {type === 'code' ?
                 <CodePreview entryId={entryId} code={code} error={error} /> :
-                <TextPreview>{data}</TextPreview>
+                <TextPreview>{code}</TextPreview>
             }
         </div>
     );

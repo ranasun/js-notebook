@@ -1,4 +1,4 @@
-import './Notebook.css';
+import './style.css';
 
 interface NotebookProp {
     children: any

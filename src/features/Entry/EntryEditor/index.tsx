@@ -1,42 +1,48 @@
-import { useState, useRef, useEffect } from 'react';
-import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
+import { useState, useRef, useEffect, forwardRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
+import { updateContent } from '../../../features/Notebook/slice'
+import CodeMirror, { BasicSetupOptions, ReactCodeMirrorRef } from '@uiw/react-codemirror';
 import { keymap } from "@codemirror/view"
 import { javascript } from '@codemirror/lang-javascript';
 import { markdown } from '@codemirror/lang-markdown';
-import { EventEmitter, Events } from '../../../common/events';
-import Theme from './codemirror-theme'
+import theme from './codemirror-theme'
 
 interface EditorProps {
-    id?: number;
-    value?: string;
-    isMarkdown: boolean;
+    entryId: string,
+    content: string;
+    type: string;
     onSubmit?(code: string): void;
-    onFocus?(): void;
+    // onFocus?(): void;
+    inFocus: string;
+    ref: any;
 }
 
-const EntryEditor: React.FC<EditorProps> = ({ id, value, onSubmit, onFocus, isMarkdown }) => {
-    const editor = useRef<any>();
-    const [input, setInput] = useState<any>(value);
+const EntryEditor: React.FC<EditorProps> = forwardRef(({ entryId, content, type, onSubmit, inFocus }, ref: any) => {
+    const dispatch = useDispatch()
 
-    useEffect(() => {
-        EventEmitter.subscribe(Events.SET_FOCUS, (entry_id) => {
-            if (id === entry_id) {
-                editor.current.view.focus();
-            }
-        });
-    }, [])
-
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         if (entryId === inFocus) {
+    //             console.log(editor.current)
+    //             editor.current.view.focus();
+    //             // console.log(editor.current.editor)
+    //         }
+    //     }, 10)
+    // }, [inFocus])
 
     function onCreate(view: any) {
         view.focus();
     }
 
     function onChange(value: string) {
-        setInput(value);
+        dispatch(updateContent({
+            entryId,
+            content: value
+        }))
     }
 
     const runCommand = () => {
-        onSubmit?.(input);
+        onSubmit?.(content);
         return true;
     }
 
@@ -70,17 +76,16 @@ const EntryEditor: React.FC<EditorProps> = ({ id, value, onSubmit, onFocus, isMa
 
     return (
         <CodeMirror
+            ref={ref}
             className='code-editor'
-            ref={editor}
-            value={input}
-            extensions={isMarkdown ? md : js}
+            value={content}
+            extensions={type === 'code' ? js : md}
             onChange={onChange}
             onCreateEditor={onCreate}
-            onFocus={onFocus}
             basicSetup={setup}
-            theme={Theme}
+            theme={theme}
         />
     );
-}
+});
 
 export default EntryEditor;

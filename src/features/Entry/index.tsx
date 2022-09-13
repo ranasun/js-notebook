@@ -1,99 +1,106 @@
-import { useState, useRef, useEffect } from 'react';
-import { EventEmitter, Events } from '../../common/events';
+import React, { useState, useRef, useEffect } from 'react';
+import type { RootState } from '../../app/store'
+import { useSelector, useDispatch } from 'react-redux'
+import { add, remove, move, updateType, setFocus } from '../../features/Notebook/slice'
 import { bundle } from '../../common/bundler';
-import MarkdownPreview from './EntryPreview/MarkdownPreview';
-import { ArrowDown, ArrowUp, CodeBracketsSquare, PlayOutline, TextAlt, Trash } from 'iconoir-react';
+import { ArrowDown, ArrowUp, CodeBracketsSquare, TextAlt, Trash } from 'iconoir-react';
 import EntryEditor from "./EntryEditor";
-import EntryPreview from "./EntryPreview";
 import EntryButton from './EntryButton';
+import CodePreview from './EntryPreview/CodePreview';
+import TextPreview from './EntryPreview/TextPreview';
 import './style.css';
 
 interface EntryProp {
-    entryId: number,
-    content: string,
-    type: string
+    index: number;
+    entryId: string;
+    content: string;
+    type: string;
 }
 
-const Entry: React.FC<EntryProp> = ({ entryId, content, type }) => {
+const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
+    const count = useSelector((state: RootState) => state.notebook.count);
+    const order = useSelector((state: RootState) => state.notebook.order);
+    const inFocus = useSelector((state: RootState) => state.notebook.inFocus);
     const [code, setCode] = useState('');
     const [error, setError] = useState('');
-    // const [type, setType] = useState('code');
-    const [data, setData] = useState('');
-    const [isHidden, setIsHidden] = useState(false);
-    const [input, setInput] = useState('');
-    const [hasFocus, setHasFocus] = useState(false);
+    const [isMarkdown, setIsMarkdown] = useState(false);
+    const dispatch = useDispatch()
+    const ref = React.createRef<any>();
 
-    async function onSubmit(input: string) {
-        if (type === 'text') {
-            setInput(input);
-            setIsHidden(true);
-            EventEmitter.dispatch(Events.RUN, { entryId, input });
+    function toggleEditorType() {
+        dispatch(updateType({
+            entryId,
+            type: type === 'code' ? 'text' : 'code'
+        }));
+        setCode('');
+        setError('');
+    }
+
+    async function prepareData() {
+        if (type === 'code') {
+            const { code, err } = await bundle(content);
+            setIsMarkdown(false)
+            setCode(code);
+            setError(err);
         } else {
-            setIsHidden(false);
-            const output = await bundle(input);
-            setData(output.code);
-            // setCode(output.code + '//' + Date.now());
-            // setError(output.err);
-            EventEmitter.dispatch(Events.RUN, { entryId, input });
+            setCode(content);
+            setError('');
+            setIsMarkdown(true)
+        }
+
+        const position = order.indexOf(entryId);
+
+        if (position === order.length - 1) {
+            dispatch(add(count));
+        } else {
+            dispatch(setFocus(order[position + 1]));
         }
     }
 
-    function toggleEditorType() {
-        // setType(type === 'code' ? 'text' : 'code');
-    }
-
-    function handleRun() {
-        EventEmitter.dispatch(Events.RUN, entryId);
-    }
-
     function moveEntryUp() {
-        EventEmitter.dispatch(Events.MOVE_UP, entryId);
+        dispatch(move({ entryId, direction: 'up' }));
     }
 
     function moveEntryDown() {
-        EventEmitter.dispatch(Events.MOVE_DOWN, entryId);
+        dispatch(move({ entryId, direction: 'down' }));
     }
 
     function removeEntry() {
-        EventEmitter.dispatch(Events.REMOVE, entryId);
+        dispatch(remove(entryId));
     }
 
     function handleDoubleClick() {
-        setIsHidden(false);
+        if (isMarkdown) {
+            setIsMarkdown(false);
+        }
     }
 
     function onFocus() {
-        setHasFocus(true);
+        dispatch(setFocus(entryId));
+        // ref.current.view.focus();
     }
 
-    function onBlur() {
-        setHasFocus(false);
-    }
-
-    const className = `entry-container ${hasFocus ? 'focus' : ''}`;
+    const className = `entry-container ${inFocus === entryId ? 'focus' : ''}`;
 
     const iconProps = {
         color: "gray",
         fontSize: 12
     }
 
+
     return (
-        <div className={className} tabIndex={entryId} onFocus={onFocus} onBlur={onBlur} onDoubleClick={handleDoubleClick}>
+        <div className={className} tabIndex={index} onFocus={onFocus} onDoubleClick={handleDoubleClick}>
             <div className="entry-block">
-                <div className="entry-id" style={{ opacity: type === 'code' ? 0 : 1 }}>[{entryId}]:</div>
+                <div className="entry-id">{!isMarkdown && `[${index}]:`}</div>
                 <div className='editor-preview' >
-                    {/* {isHidden && <MarkdownPreview>{input}</MarkdownPreview>}
-                    {!isHidden && <EntryEditor value={input} onSubmit={onSubmit}entryId={entryId} isMarkdown={markdown} />}
-                    {!isHidden && <EntryPreview code={markdown ? '' : code} error={error}entryId={entryId} />} */}
-                    <EntryPreview entryId={entryId} data={data} type={type} />
+                    {!isMarkdown && <EntryEditor ref={ref} entryId={entryId} content={content} type={type} onSubmit={prepareData} inFocus={inFocus} />}
+                    {type === 'code' && <CodePreview entryId={entryId} code={code} error={error} />}
+                    {isMarkdown && <TextPreview>{code}</TextPreview>}
                 </div>
             </div>
-            <div className="button-container">
+            <div className="button-container" style={{ display: inFocus === entryId ? 'flex' : 'none' }}>
                 <EntryButton onClick={toggleEditorType}>
-                    {type === 'code' ?
-                        <CodeBracketsSquare {...iconProps} /> :
-                        <TextAlt {...iconProps} />
-                    }
+                    {type === 'code' ? <CodeBracketsSquare {...iconProps} /> : <TextAlt {...iconProps} />}
                 </EntryButton>
                 <EntryButton onClick={moveEntryUp}><ArrowUp {...iconProps} /></EntryButton>
                 <EntryButton onClick={moveEntryDown}><ArrowDown {...iconProps} /></EntryButton>

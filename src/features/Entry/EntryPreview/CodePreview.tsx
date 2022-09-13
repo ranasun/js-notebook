@@ -15,8 +15,6 @@ const html = `
             }
         </style>
         <script>
-            let id;
-
             const handleError = (err) => {
                 const root = document.getElementById('root');
                 root.innerHTML = '<div class="__error">'+err+'</div>';
@@ -31,18 +29,19 @@ const html = `
             window.addEventListener('error', (event) => {
                 event.preventDefault();
                 handleError(event.error);
-                updateSize(event);
+                updateSize();
             });
 
             window.addEventListener('message', (event) => {
-                id = event.data.id;
+                id = event.data.entryId;
                 try {
                     if (event.data.error !== '') throw event.data.error;
                     eval(event.data.code);
                 } catch(err) {
                     handleError(err);
+                } finally {
+                    updateSize();
                 }
-                updateSize();
             }, false);
         </script>
     </head>
@@ -53,7 +52,7 @@ const html = `
 `
 
 interface CodePreviewProp {
-    entryId: number;
+    entryId: string;
     code: string;
     error: string;
 }
@@ -69,7 +68,7 @@ const CodePreview: React.FC<CodePreviewProp> = ({ entryId, code, error }) => {
             iframe.current.contentWindow.postMessage({ entryId, code, error }, '*');
         }, 50)
 
-    }, [code])
+    }, [code, error])
 
     useEffect(() => {
         window.addEventListener('message', listener, false);
@@ -80,7 +79,6 @@ const CodePreview: React.FC<CodePreviewProp> = ({ entryId, code, error }) => {
     }, []);
 
     function listener(event: any) {
-        console.log('preview message event');
         if (event.data.id === entryId) {
             setHeight(event.data.height + 'px');
         }

@@ -1,6 +1,6 @@
 import { EditorView } from "@codemirror/view"
 
-let Theme = EditorView.theme({
+let theme = EditorView.theme({
     "&": {
         border: "1px solid #ddd",
         backgroundColor: "#eee"
@@ -28,4 +28,4 @@ let Theme = EditorView.theme({
     }
 }, { dark: false })
 
-export default Theme;
+export default theme;
