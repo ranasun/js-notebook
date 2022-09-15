@@ -66,14 +66,22 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
 
     async function onSubmit() {
         if (type === 'code') {
-            const prev = await bundle(getPastCodes(entryId));
-            const output = await bundle(content);
             dispatch(addCode({ id: entryId, code: content + '\n' }));
+            const prev = await bundle(getPastCodes(entryId));
+            const output = await bundle(
+                getPastCodes(entryId) +
+                    `
+                    document.querySelector("body").innerHTML = "";
+                    document.querySelector("body").innerHTML = '<div id="root"></div>'
+                    // document.querySelector("#root").innerHTML = "";
+                    ` +
+                    content
+            );
+            console.log(getPastCodes(entryId));
             setIsMarkdown(false);
             setPrev(prev.code);
             setCode(output.code);
             setError(output.err);
-            console.log(codes, prev.code, output.code);
         } else {
             setCode(content);
             setError('');

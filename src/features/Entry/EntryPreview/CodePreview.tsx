@@ -14,10 +14,13 @@ const html = `
                 font-family: monospace;
             }
         </style>
+        </head>
+        <body>
+        <div id="root"></div>
         <script>
             const handleError = (err) => {
-                const root = document.getElementById('root');
-                root.innerHTML = '<div class="__error">'+err+'</div>';
+                const body = document.querySelector('body');
+                body.innerHTML = '<div id="root"><div class="__error">'+err+'</div></div>';
                 console.error(err);
             }
 
@@ -38,20 +41,14 @@ const html = `
                 id = event.data.entryId;
                 try {
                     if (event.data.error !== '') throw event.data.error;
-                    try {
-                        eval(event.data.prev);
-                    } catch(e) {}
-                    document.querySelector('body').innerHTML = '<div id="root"></div>'
                     eval(event.data.code);
                 } catch(err) {
                     handleError(err);
                 } finally {
+                    updateSize();
                 }
-                updateSize();
             }, false);
         </script>
-    </head>
-    <body>
     </body>
 </html>
 `;
