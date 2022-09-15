@@ -1,23 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 export interface EntryState {
-  count: number
+    count: number;
 }
 
 const initialState: EntryState = {
-  count: 0,
-}
+    count: 0,
+};
 
 export const entrySlice = createSlice({
-  name: 'entry',
-  initialState,
-  reducers: {
-    increment: (state) => {
-      state.count += 1
+    name: 'entry',
+    initialState,
+    reducers: {
+        increment: (state) => {
+            state.count += 1;
+        },
     },
-  },
-})
+});
 
-export const { increment } = entrySlice.actions
+export const { increment } = entrySlice.actions;
 
-export default entrySlice.reducer
+export default entrySlice.reducer;

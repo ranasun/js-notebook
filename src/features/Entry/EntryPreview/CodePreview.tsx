@@ -22,8 +22,10 @@ const html = `
             }
 
             const updateSize = () => {
-                const height = window.document.getElementsByTagName("html")[0].scrollHeight;
-                window.parent.postMessage({id, height }, '*');
+                setTimeout(() => {
+                    const height = window.document.querySelector("html").scrollHeight + 1;
+                    window.parent.postMessage({id, height }, '*');
+                }, 1);
             }
 
             window.addEventListener('error', (event) => {
@@ -36,28 +38,37 @@ const html = `
                 id = event.data.entryId;
                 try {
                     if (event.data.error !== '') throw event.data.error;
+                    try {
+                        eval(event.data.prev);
+                    } catch(e) {}
+                    document.querySelector('body').innerHTML = '<div id="root"></div>'
                     eval(event.data.code);
                 } catch(err) {
                     handleError(err);
                 } finally {
-                    updateSize();
                 }
+                updateSize();
             }, false);
         </script>
     </head>
     <body>
-        <div id="root"></div>
     </body>
 </html>
-`
+`;
 
 interface CodePreviewProp {
     entryId: string;
+    prev: string;
     code: string;
     error: string;
 }
 
-const CodePreview: React.FC<CodePreviewProp> = ({ entryId, code, error }) => {
+const CodePreview: React.FC<CodePreviewProp> = ({
+    entryId,
+    prev,
+    code,
+    error,
+}) => {
     const iframe = useRef<any>();
     const [height, setHeight] = useState('');
 
@@ -65,18 +76,20 @@ const CodePreview: React.FC<CodePreviewProp> = ({ entryId, code, error }) => {
         setHeight('0px');
         iframe.current.srcdoc = html;
         setTimeout(() => {
-            iframe.current.contentWindow.postMessage({ entryId, code, error }, '*');
-        }, 50)
-
-    }, [code, error])
+            iframe.current.contentWindow.postMessage(
+                { entryId, prev, code, error },
+                '*'
+            );
+        }, 50);
+    }, [code, error]);
 
     useEffect(() => {
         window.addEventListener('message', listener, false);
 
         return () => {
             window.removeEventListener('message', listener, false);
-        }
-    }, []);
+        };
+    }, [code]);
 
     function listener(event: any) {
         if (event.data.id === entryId) {
@@ -84,14 +97,16 @@ const CodePreview: React.FC<CodePreviewProp> = ({ entryId, code, error }) => {
         }
     }
 
-    return <iframe
-        ref={iframe}
-        style={{ border: 0, marginTop: '5px' }}
-        sandbox='allow-scripts'
-        srcDoc={html}
-        height={height}
-        width="100%">
-    </iframe>;
-}
+    return (
+        <iframe
+            ref={iframe}
+            style={{ border: 0, marginTop: '5px' }}
+            sandbox="allow-scripts"
+            srcDoc={html}
+            height={height}
+            width="100%"
+        ></iframe>
+    );
+};
 
 export default CodePreview;
