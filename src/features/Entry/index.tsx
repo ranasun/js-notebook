@@ -73,11 +73,9 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
                     `
                     document.querySelector("body").innerHTML = "";
                     document.querySelector("body").innerHTML = '<div id="root"></div>'
-                    // document.querySelector("#root").innerHTML = "";
                     ` +
                     content
             );
-            console.log(getPastCodes(entryId));
             setIsMarkdown(false);
             setPrev(prev.code);
             setCode(output.code);

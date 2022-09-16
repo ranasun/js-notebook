@@ -16,7 +16,7 @@ const html = `
         </style>
         </head>
         <body>
-        <div id="root"></div>
+        <div id='root'></div>
         <script>
             const handleError = (err) => {
                 const body = document.querySelector('body');
@@ -40,7 +40,6 @@ const html = `
             window.addEventListener('message', (event) => {
                 id = event.data.entryId;
                 try {
-                    if (event.data.error !== '') throw event.data.error;
                     eval(event.data.code);
                 } catch(err) {
                     handleError(err);
@@ -48,6 +47,26 @@ const html = `
                     updateSize();
                 }
             }, false);
+
+            (() => {
+                var logger = console.log;
+    
+                console.log = function () {
+                    const __root = document.getElementById('root');
+                    let __pre = document.createElement('pre');
+                    __pre.style.whiteSpace = 'pre-wrap';
+                    __root.append(__pre);
+                    [...arguments].forEach(a => {
+                        const span = document.createElement('span');
+                        span.style.padding = '2px';
+                        span.innerText = JSON.stringify(a);
+                        __pre.append(span);
+                    })
+                    
+                    updateSize();
+                    logger.apply(console, arguments);
+                };
+            })();
         </script>
     </body>
 </html>
@@ -89,8 +108,9 @@ const CodePreview: React.FC<CodePreviewProp> = ({
     }, [code]);
 
     function listener(event: any) {
-        if (event.data.id === entryId) {
-            setHeight(event.data.height + 'px');
+        const { data } = event;
+        if (data.id === entryId && Object.hasOwn(data, 'height')) {
+            setHeight(data.height + 'px');
         }
     }
 
