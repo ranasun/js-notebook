@@ -1,7 +1,7 @@
 import './style.css';
 
 interface NotebookProp {
-    children: any;
+    children: React.ReactNode;
 }
 
 const Notebook: React.FC<NotebookProp> = ({ children }) => {

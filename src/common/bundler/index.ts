@@ -17,22 +17,17 @@ export const bundle = async (rawCode: string) => {
         await initBundler();
     }
 
-    // const bundle = rawCode.includes('import') ? true : false;
-
     try {
         const result = await esbuild.build({
             entryPoints: ['index.js'],
             bundle: true,
             write: false,
             minify: true,
-            // treeShaking: true,
-            // jsxDev: true,
-            // splitting: true,
-            // logLevel: 'verbose',
-            // format: 'cjs',
-            // keepNames: true,
-            // sourcemap: true,
-            // platform: 'browser',
+            treeShaking: true,
+            // format: 'iife',
+            keepNames: true,
+            sourcemap: true,
+            platform: 'browser',
             plugins: [unpkgPathPlugin(), fetchPlugin(rawCode)],
         });
 

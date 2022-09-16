@@ -31,10 +31,9 @@ interface EntryProp {
 }
 
 const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
-    const count = useSelector((state: RootState) => state.notebook.count);
-    const order = useSelector((state: RootState) => state.notebook.order);
-    const inFocus = useSelector((state: RootState) => state.notebook.inFocus);
-    const codes = useSelector((state: RootState) => state.notebook.codes);
+    const { count, codes, inFocus, order } = useSelector(
+        (state: RootState) => state.notebook
+    );
     const [prev, setPrev] = useState('');
     const [code, setCode] = useState('');
     const [error, setError] = useState('');
@@ -97,9 +96,7 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
 
     useEffect(() => {
         if (inFocus === entryId && ref.current.view) {
-            // setTimeout(() => {
             ref.current.view.focus();
-            // }, 10)
         }
     }, [inFocus]);
 

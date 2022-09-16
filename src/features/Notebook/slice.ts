@@ -86,15 +86,15 @@ export const notebookSlice = createSlice({
 });
 
 const initialContent = `
-import React from 'react'
-import ReactDOM from 'react-dom'
+    import React from 'react'
+    import ReactDOM from 'react-dom'
 
-const App = () => {
-  return <button>Click Me</button>
-}
+    const App = () => {
+    return <button>Click Me</button>
+    }
 
-const root = ReactDOM.createRoot(document.getElementById('root'))
-root.render(<App/>)
+    const root = ReactDOM.createRoot(document.getElementById('root'))
+    root.render(<App/>)
 `;
 
 function addDefaultEntry(state: NotebookState, index: number) {

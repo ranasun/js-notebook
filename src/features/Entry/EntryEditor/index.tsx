@@ -8,14 +8,13 @@ import CodeMirror, {
 import { keymap } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
 import { markdown } from '@codemirror/lang-markdown';
-import theme from './codemirror-theme';
+import theme from './theme';
 
 interface EditorProps {
     entryId: string;
     content: string;
     type: string;
     onSubmit?(code: string): void;
-    // onFocus?(): void;
     inFocus: string;
     ref: any;
 }

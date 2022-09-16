@@ -7,8 +7,9 @@ import Entry from '../features/Entry';
 import './App.css';
 
 const App = () => {
-    const entries = useSelector((state: RootState) => state.notebook.entries);
-    const order = useSelector((state: RootState) => state.notebook.order);
+    const { entries, order } = useSelector(
+        (state: RootState) => state.notebook
+    );
     const dispatch = useDispatch();
 
     useEffect(() => {

@@ -24,7 +24,7 @@ const html = `
                 console.error(err);
             }
 
-            const updateSize = () => {
+            const updateHeight = () => {
                 setTimeout(() => {
                     const height = window.document.querySelector("html").scrollHeight + 1;
                     window.parent.postMessage({id, height }, '*');
@@ -34,7 +34,7 @@ const html = `
             window.addEventListener('error', (event) => {
                 event.preventDefault();
                 handleError(event.error);
-                updateSize();
+                updateHeight();
             });
 
             window.addEventListener('message', (event) => {
@@ -44,7 +44,7 @@ const html = `
                 } catch(err) {
                     handleError(err);
                 } finally {
-                    updateSize();
+                    updateHeight();
                 }
             }, false);
 
@@ -63,7 +63,7 @@ const html = `
                         __pre.append(span);
                     })
                     
-                    updateSize();
+                    updateHeight();
                     logger.apply(console, arguments);
                 };
             })();
