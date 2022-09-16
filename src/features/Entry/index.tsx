@@ -14,6 +14,8 @@ import {
     ArrowDown,
     ArrowUp,
     CodeBracketsSquare,
+    Download,
+    Upload,
     TextAlt,
     Trash,
 } from 'iconoir-react';
@@ -57,7 +59,7 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
         let bundle = '';
         for (let i = 0; i < order.length; i++) {
             if (id == order[i]) break;
-            bundle += codes[order[i]];
+            bundle += codes[order[i]] || '';
         }
 
         return bundle;
@@ -108,6 +110,16 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
         dispatch(moveEntry({ entryId, direction: 'down' }));
     }
 
+    function handleAddAbove() {
+        const index = order.indexOf(entryId);
+        dispatch(addEntry(index));
+    }
+
+    function handleAddBelow() {
+        const index = order.indexOf(entryId);
+        dispatch(addEntry(index + 1));
+    }
+
     function handleRemove() {
         dispatch(removeEntry(entryId));
     }
@@ -127,7 +139,7 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
 
     const iconProps = {
         color: 'gray',
-        fontSize: 12,
+        fontSize: 14,
     };
 
     return (
@@ -178,6 +190,12 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
                 </EntryButton>
                 <EntryButton onClick={handleMoveDown}>
                     <ArrowDown {...iconProps} />
+                </EntryButton>
+                <EntryButton onClick={handleAddAbove}>
+                    <Upload {...iconProps} />
+                </EntryButton>
+                <EntryButton onClick={handleAddBelow}>
+                    <Download {...iconProps} />
                 </EntryButton>
                 <EntryButton onClick={handleRemove}>
                     <Trash {...iconProps} />

@@ -105,11 +105,7 @@ function addDefaultEntry(state: NotebookState, index: number) {
         type: 'code',
     };
     state.entries[entry.entryId] = entry;
-    if (index === 0) {
-        state.order.push(entry.entryId);
-    } else {
-        state.order.splice(index, 0, entry.entryId);
-    }
+    state.order.splice(index, 0, entry.entryId);
     state.count += 1;
     state.inFocus = entry.entryId;
 }
