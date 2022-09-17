@@ -40,6 +40,7 @@ const html = `
             window.addEventListener('message', (event) => {
                 id = event.data.entryId;
                 try {
+                    if (event.data.error) throw event.data.error;
                     eval(event.data.code);
                 } catch(err) {
                     handleError(err);
