@@ -1,10 +1,7 @@
 import { useState, useRef, useEffect, forwardRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateEntryContent, setFocus } from '../../../features/Notebook/slice';
-import CodeMirror, {
-    BasicSetupOptions,
-    ReactCodeMirrorRef,
-} from '@uiw/react-codemirror';
+import { updateEntryContent, setFocus } from '../../Page/slice';
+import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 import { keymap } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
 import { markdown } from '@codemirror/lang-markdown';

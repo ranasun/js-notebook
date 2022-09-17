@@ -1,8 +1,6 @@
-import { StrictMode, useEffect } from 'react';
-import type { RootState } from './store';
 import { useSelector } from 'react-redux';
-import { addEntry } from '../features/Notebook/slice';
-import Notebook from '../features/Notebook';
+import type { RootState } from './store';
+import Page from '../features/Page';
 import Entry from '../features/Entry';
 import './App.css';
 
@@ -11,14 +9,12 @@ const App = () => {
 
     return (
         <div>
-            <StrictMode>
-                <Notebook>
-                    {order.map((entryId) => {
-                        const props = entries[entryId];
-                        return <Entry key={entryId} {...props} />;
-                    })}
-                </Notebook>
-            </StrictMode>
+            <Page>
+                {order.map((entryId) => {
+                    const props = entries[entryId];
+                    return <Entry key={entryId} {...props} />;
+                })}
+            </Page>
         </div>
     );
 };

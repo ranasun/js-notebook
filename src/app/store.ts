@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import notebookReducer from '../features/Notebook/slice';
+import pageReducer from '../features/Page/slice';
 import {
     persistReducer,
     FLUSH,
@@ -17,7 +17,7 @@ const persistConfig = {
     storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, notebookReducer);
+const persistedReducer = persistReducer(persistConfig, pageReducer);
 
 export const store = configureStore({
     reducer: persistedReducer,

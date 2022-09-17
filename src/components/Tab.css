@@ -1,0 +1,48 @@
+.tab-list {
+    display: flex;
+    border-left: 1px solid;
+}
+
+.tab-item {
+    border-top: 1px solid;
+    border-right: 1px solid;
+    padding: 5px 30px;
+    cursor: pointer;
+    background: lightgrey;
+    user-select: none;
+    position: relative;
+}
+
+.tab-item.active {
+    border-top: 4px solid coral;
+    box-sizing: content-box;
+    padding-top: 2px;
+    background: white;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: initial;
+}
+
+.add-tab-button {
+    /* border-top: 1px solid; */
+    /* border-right: 1px solid; */
+    padding: 0px 10px;
+    cursor: pointer;
+    /* background: lightgrey; */
+    font-weight: bold;
+    font-size: 1.5em;
+    color: grey;
+}
+
+.remove-page-button {
+    position: absolute;
+    right: 10px;
+    display: inline-block;
+    margin-left: 10px;
+    font-weight: bold;
+}

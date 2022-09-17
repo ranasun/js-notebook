@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import type { EntryType, MoveDirection } from '../../app/entry';
 import { Entry, generateId } from '../../app/entry';
 
-export interface NotebookState {
+export interface PageState {
     entries: Record<string, Entry>;
     order: string[];
     count: number;
@@ -11,7 +11,7 @@ export interface NotebookState {
     codes: Record<string, string>;
 }
 
-const initialState: NotebookState = {
+const initialState: PageState = {
     entries: {},
     order: [],
     count: 0,
@@ -34,8 +34,8 @@ const initialState: NotebookState = {
     initialState.count = 1;
 })();
 
-export const notebookSlice = createSlice({
-    name: 'notebook',
+export const pageSlice = createSlice({
+    name: 'page',
     initialState,
     reducers: {
         addEntry: (state, action: PayloadAction<number>) => {
@@ -100,7 +100,7 @@ export const notebookSlice = createSlice({
     },
 });
 
-function addDefaultEntry(state: NotebookState, index: number) {
+function addDefaultEntry(state: PageState, index: number) {
     const entry: Entry = {
         index: state.count + 1,
         entryId: generateId(),
@@ -122,6 +122,6 @@ export const {
     updateEntryContent,
     setFocus,
     addCode,
-} = notebookSlice.actions;
+} = pageSlice.actions;
 
-export default notebookSlice.reducer;
+export default pageSlice.reducer;

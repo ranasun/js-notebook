@@ -97,7 +97,7 @@ const CodePreview: React.FC<CodePreviewProp> = ({
                 { entryId, prev, code, error },
                 '*'
             );
-        }, 50);
+        }, 1);
     }, [code, error]);
 
     useEffect(() => {

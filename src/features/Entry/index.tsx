@@ -8,7 +8,7 @@ import {
     updateEntryType,
     setFocus,
     addCode,
-} from '../../features/Notebook/slice';
+} from '../Page/slice';
 import { bundle } from '../../common/bundler';
 import {
     ArrowDown,
