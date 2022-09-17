@@ -13,6 +13,7 @@
 .entry-block {
     display: flex;
     align-items: start;
+    min-height: 47px;
 }
 
 .entry-id {
