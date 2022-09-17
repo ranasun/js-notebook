@@ -1,20 +1,13 @@
 import { StrictMode, useEffect } from 'react';
 import type { RootState } from './store';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { addEntry } from '../features/Notebook/slice';
 import Notebook from '../features/Notebook';
 import Entry from '../features/Entry';
 import './App.css';
 
 const App = () => {
-    const { entries, order } = useSelector(
-        (state: RootState) => state.notebook
-    );
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(addEntry(0));
-    }, []);
+    const { entries, order } = useSelector((state: RootState) => state);
 
     return (
         <div>
