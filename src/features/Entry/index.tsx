@@ -45,6 +45,12 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
     const dispatch = useDispatch();
     const ref = React.createRef<any>();
 
+    useEffect(() => {
+        if (inFocus === entryId && ref.current.view) {
+            ref.current.view.focus();
+        }
+    }, [inFocus]);
+
     function toggleEditorType() {
         dispatch(
             updateEntryType({
@@ -54,6 +60,7 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
         );
         setCode('');
         setError('');
+        setPrev('');
     }
 
     function getPastCodes(id: string): string {
@@ -72,9 +79,7 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
             const prev = await bundle(getPastCodes(entryId));
             const output = await bundle(
                 getPastCodes(entryId) +
-                    `
-                    document.querySelector('body').innerHTML = '<div id="root"></div>'
-                    ` +
+                    `document.querySelector('body').innerHTML = '<div id="root"></div>';` +
                     content
             );
             setIsMarkdown(false);
@@ -95,12 +100,6 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
             dispatch(setFocus(order[position + 1]));
         }
     }
-
-    useEffect(() => {
-        if (inFocus === entryId && ref.current.view) {
-            ref.current.view.focus();
-        }
-    }, [inFocus]);
 
     function handleMoveUp() {
         dispatch(moveEntry({ entryId, direction: 'up' }));
@@ -164,7 +163,7 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
                             inFocus={inFocus}
                         />
                     )}
-                    {type === 'code' && (
+                    {type === 'code' && (code || error) && (
                         <CodePreview
                             entryId={entryId}
                             prev={prev}
