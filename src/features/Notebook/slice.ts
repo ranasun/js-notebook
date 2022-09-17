@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { EntryType, MoveDirection } from '../../app/entry';
-import { Entry } from '../../app/entry';
+import { Entry, generateId } from '../../app/entry';
 
 export interface NotebookState {
     entries: Record<string, Entry>;
@@ -18,6 +18,33 @@ const initialState: NotebookState = {
     inFocus: '',
     codes: {},
 };
+
+// (() => {
+//     const initialId = generateId();
+
+//     const initialContent = `
+//     import React from 'react'
+//     import ReactDOM from 'react-dom'
+
+//     const App = () => {
+//     return <button>Click Me</button>
+//     }
+
+//     const root = ReactDOM.createRoot(document.getElementById('root'))
+//     root.render(<App/>)
+//     `;
+
+//     const initialEntry: Entry = {
+//         index: 1,
+//         entryId: initialId,
+//         content: initialContent,
+//         type: 'code',
+//     };
+
+//     initialState.entries[initialId] = initialEntry;
+//     initialState.order.push(initialId);
+//     initialState.count = 1;
+// })();
 
 export const notebookSlice = createSlice({
     name: 'notebook',
@@ -85,18 +112,6 @@ export const notebookSlice = createSlice({
     },
 });
 
-const initialContent = `
-    import React from 'react'
-    import ReactDOM from 'react-dom'
-
-    const App = () => {
-    return <button>Click Me</button>
-    }
-
-    const root = ReactDOM.createRoot(document.getElementById('root'))
-    root.render(<App/>)
-`;
-
 function addDefaultEntry(state: NotebookState, index: number) {
     const entry: Entry = {
         index: state.count + 1,
@@ -108,10 +123,6 @@ function addDefaultEntry(state: NotebookState, index: number) {
     state.order.splice(index, 0, entry.entryId);
     state.count += 1;
     state.inFocus = entry.entryId;
-}
-
-function generateId(): string {
-    return Math.random().toString(36).substring(2, 10);
 }
 
 export const {

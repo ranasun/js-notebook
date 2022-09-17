@@ -6,3 +6,6 @@ export interface Entry {
     content: string;
     type: EntryType;
 }
+export function generateId(): string {
+    return Math.random().toString(36).substring(2, 10);
+}
