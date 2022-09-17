@@ -35,7 +35,7 @@ interface EntryProp {
 
 const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
     const { count, codes, inFocus, order } = useSelector(
-        (state: RootState) => state.notebook
+        (state: RootState) => state
     );
     const [prev, setPrev] = useState('');
     const [code, setCode] = useState('');

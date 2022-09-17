@@ -19,32 +19,20 @@ const initialState: NotebookState = {
     codes: {},
 };
 
-// (() => {
-//     const initialId = generateId();
+(() => {
+    const initialId = generateId();
 
-//     const initialContent = `
-//     import React from 'react'
-//     import ReactDOM from 'react-dom'
+    const initialEntry: Entry = {
+        index: 1,
+        entryId: initialId,
+        content: '',
+        type: 'code',
+    };
 
-//     const App = () => {
-//     return <button>Click Me</button>
-//     }
-
-//     const root = ReactDOM.createRoot(document.getElementById('root'))
-//     root.render(<App/>)
-//     `;
-
-//     const initialEntry: Entry = {
-//         index: 1,
-//         entryId: initialId,
-//         content: initialContent,
-//         type: 'code',
-//     };
-
-//     initialState.entries[initialId] = initialEntry;
-//     initialState.order.push(initialId);
-//     initialState.count = 1;
-// })();
+    initialState.entries[initialId] = initialEntry;
+    initialState.order.push(initialId);
+    initialState.count = 1;
+})();
 
 export const notebookSlice = createSlice({
     name: 'notebook',
