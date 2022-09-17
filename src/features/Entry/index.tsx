@@ -18,6 +18,7 @@ import {
     Upload,
     TextAlt,
     Trash,
+    PlayOutline,
 } from 'iconoir-react';
 import EntryEditor from './EntryEditor';
 import EntryButton from './EntryButton';
@@ -72,8 +73,7 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
             const output = await bundle(
                 getPastCodes(entryId) +
                     `
-                    document.querySelector("body").innerHTML = "";
-                    document.querySelector("body").innerHTML = '<div id="root"></div>'
+                    document.querySelector('body').innerHTML = '<div id="root"></div>'
                     ` +
                     content
             );
@@ -139,7 +139,8 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
 
     const iconProps = {
         color: 'gray',
-        fontSize: 14,
+        fontSize: 12,
+        strokeWidth: 2,
     };
 
     return (
@@ -184,6 +185,9 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
                     ) : (
                         <TextAlt {...iconProps} />
                     )}
+                </EntryButton>
+                <EntryButton onClick={onSubmit}>
+                    <PlayOutline {...iconProps} />
                 </EntryButton>
                 <EntryButton onClick={handleMoveUp}>
                     <ArrowUp {...iconProps} />
