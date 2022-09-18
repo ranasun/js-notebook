@@ -1,7 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { EntryType, MoveDirection } from '../../app/entry';
-import { Entry, generateId } from '../../app/entry';
+import type { EntryType, MoveDirection } from '../../common/types';
+import { generateId } from '../../common/utils';
+
+interface Entry {
+    index: number;
+    entryId: string;
+    content: string;
+    type: EntryType;
+}
 
 export interface PageState {
     entries: Record<string, Entry>;

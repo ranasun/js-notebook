@@ -8,7 +8,7 @@ import {
     updateEntryType,
     setFocus,
     addCode,
-} from '../Page/slice';
+} from '.././../app/rootReducer';
 import { bundle } from '../../common/bundler';
 import {
     ArrowDown,
@@ -28,15 +28,24 @@ import './style.css';
 
 interface EntryProp {
     index: number;
+    pageId: string;
     entryId: string;
     content: string;
     type: string;
 }
 
-const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
-    const { count, codes, inFocus, order } = useSelector(
-        (state: RootState) => state
-    );
+const Entry: React.FC<EntryProp> = ({
+    pageId,
+    entryId,
+    content,
+    type,
+    index,
+}) => {
+    const { pages } = useSelector((state: RootState) => state);
+
+    const page = pages[pageId];
+    const { inFocus, order, codes, runCount } = page;
+
     const [prev, setPrev] = useState('');
     const [code, setCode] = useState('');
     const [error, setError] = useState('');
@@ -54,6 +63,7 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
     function toggleEditorType() {
         dispatch(
             updateEntryType({
+                pageId,
                 entryId,
                 type: type === 'code' ? 'text' : 'code',
             })
@@ -75,7 +85,7 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
 
     async function onSubmit() {
         if (type === 'code') {
-            dispatch(addCode({ id: entryId, code: content + '\n' }));
+            dispatch(addCode({ pageId, entryId, code: content + '\n' }));
             const prev = await bundle(getPastCodes(entryId));
             const output = await bundle(
                 getPastCodes(entryId) +
@@ -95,32 +105,32 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
         const position = order.indexOf(entryId);
 
         if (position === order.length - 1) {
-            dispatch(addEntry(count));
+            dispatch(addEntry({ pageId, index: runCount }));
         } else {
-            dispatch(setFocus(order[position + 1]));
+            dispatch(setFocus({ pageId, entryId: order[position + 1] }));
         }
     }
 
     function handleMoveUp() {
-        dispatch(moveEntry({ entryId, direction: 'up' }));
+        dispatch(moveEntry({ pageId, entryId, direction: 'up' }));
     }
 
     function handleMoveDown() {
-        dispatch(moveEntry({ entryId, direction: 'down' }));
+        dispatch(moveEntry({ pageId, entryId, direction: 'down' }));
     }
 
     function handleAddAbove() {
         const index = order.indexOf(entryId);
-        dispatch(addEntry(index));
+        dispatch(addEntry({ pageId, index }));
     }
 
     function handleAddBelow() {
         const index = order.indexOf(entryId);
-        dispatch(addEntry(index + 1));
+        dispatch(addEntry({ pageId, index: index + 1 }));
     }
 
     function handleRemove() {
-        dispatch(removeEntry(entryId));
+        dispatch(removeEntry({ pageId, entryId }));
     }
 
     function handleDoubleClick() {
@@ -157,6 +167,7 @@ const Entry: React.FC<EntryProp> = ({ entryId, content, type, index }) => {
                         <EntryEditor
                             ref={ref}
                             entryId={entryId}
+                            pageId={pageId}
                             content={content}
                             type={type}
                             onSubmit={onSubmit}

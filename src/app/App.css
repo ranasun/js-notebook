@@ -1,3 +1,8 @@
 body {
     background-color: #eee;
 }
+
+.tab-list {
+    display: flex;
+    border-left: 1px solid;
+}

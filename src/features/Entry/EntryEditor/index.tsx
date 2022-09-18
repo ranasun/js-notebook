@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, forwardRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateEntryContent, setFocus } from '../../Page/slice';
+import { updateEntryContent, setFocus } from '../../../app/rootReducer';
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 import { keymap } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
@@ -8,6 +8,7 @@ import { markdown } from '@codemirror/lang-markdown';
 import theme from './theme';
 
 interface EditorProps {
+    pageId: string;
     entryId: string;
     content: string;
     type: string;
@@ -17,7 +18,7 @@ interface EditorProps {
 }
 
 const EntryEditor: React.FC<EditorProps> = forwardRef(
-    ({ entryId, content, type, onSubmit, inFocus }, ref: any) => {
+    ({ pageId, entryId, content, type, onSubmit, inFocus }, ref: any) => {
         const dispatch = useDispatch();
 
         function onCreate(view: any) {
@@ -25,12 +26,13 @@ const EntryEditor: React.FC<EditorProps> = forwardRef(
         }
 
         function onFocus() {
-            dispatch(setFocus(entryId));
+            dispatch(setFocus({ pageId, entryId }));
         }
 
         function onChange(value: string) {
             dispatch(
                 updateEntryContent({
+                    pageId,
                     entryId,
                     content: value,
                 })

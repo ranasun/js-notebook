@@ -1,4 +1,14 @@
-.page {
-    background-color: white;
-    padding: 10px 20px;
+.tab-list {
+    display: flex;
+    border-left: 1px solid;
+}
+
+.tab-item {
+    border-top: 1px solid;
+    border-right: 1px solid;
+    padding: 5px 30px;
+    cursor: pointer;
+    background: lightgrey;
+    user-select: none;
+    position: relative;
 }
