@@ -1,57 +1,42 @@
-import type { RootState } from './store';
-import { useSelector, useDispatch } from 'react-redux';
-import { addBlankPage, setActivePage } from '../app/rootReducer';
-import TabItem from '../features/Page/TabItem';
-import TabContent from '../features/Page/TabContent';
-
+import Logo from '../components/Logo';
+import Navbar from '../components/Navbar';
+import Notebook from '../components/Notebook';
+import Pages from '../containers/Pages';
 import './App.css';
-import { useEffect } from 'react';
-import { Plus } from 'iconoir-react';
+import { SunLight } from 'iconoir-react';
+import { Menu, MenuItem } from '../components/Menu';
 
 const App = () => {
-    const { pages, order, active } = useSelector((state: RootState) => state);
-    const dispatch = useDispatch();
-
-    return (
-        <div className="notebook">
-            <nav>JSNotebook</nav>
-            <main>
-                <section className="tab-list">
-                    {order.map((id) => {
-                        const { pageId, title } = pages[id];
-                        return (
-                            <TabItem
-                                key={pageId}
-                                index={pageId}
-                                title={title}
-                                active={active}
-                            />
-                        );
-                    })}
-                    <div
-                        className="add-tab-button"
-                        onClick={() => dispatch(addBlankPage())}
-                    >
-                        <Plus fontSize={12} strokeWidth={3} />
-                    </div>
-                </section>
-                <section>
-                    {order.map((id) => {
-                        const { pageId, entries, order } = pages[id];
-                        return (
-                            <TabContent
-                                key={pageId}
-                                index={pageId}
-                                active={active}
-                                entries={entries}
-                                order={order}
-                            />
-                        );
-                    })}
-                </section>
-            </main>
+  return (
+    <div className="dark">
+      <Navbar>
+        <div className="container mx-auto">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center">
+              <a className="font-light py-2" href="#">
+                JS Notebook
+              </a>
+              <div className="ml-4 py-2 font-medium cursor-default hover:bg-gray-100">
+                MyNotebook
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <SunLight strokeWidth={2} color="gray" />
+            </div>
+          </div>
         </div>
-    );
+        <hr />
+        <Menu>
+          <MenuItem text="File" />
+          <MenuItem text="Page" />
+          <MenuItem text="Entry" />
+          <MenuItem text="Help" />
+          <MenuItem text="About" />
+        </Menu>
+      </Navbar>
+      <Pages />
+    </div>
+  );
 };
 
 export default App;

@@ -3,11 +3,5 @@
 @tailwind utilities;
 
 body {
-    background-color: #eee;
-}
-
-.tab-list {
-    display: flex;
-    flex-wrap: wrap;
-    border-left: 1px solid;
+  background-color: #eee;
 }
