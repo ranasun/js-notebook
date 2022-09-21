@@ -4,7 +4,7 @@ import Notebook from '../components/Notebook';
 import Pages from '../containers/Pages';
 import './App.css';
 import { SunLight } from 'iconoir-react';
-import { Menu, MenuItem } from '../components/Menu';
+import { MenuGroup, Menu, MenuItem } from '../components/Menu';
 
 const App = () => {
   return (
@@ -26,13 +26,44 @@ const App = () => {
           </div>
         </div>
         <hr />
-        <Menu>
-          <MenuItem text="File" />
-          <MenuItem text="Page" />
-          <MenuItem text="Entry" />
-          <MenuItem text="Help" />
-          <MenuItem text="About" />
-        </Menu>
+        <MenuGroup>
+          <Menu text="File">
+            <MenuItem onClick={() => {}}>New Page</MenuItem>
+            <hr />
+            <MenuItem onClick={() => {}}>New Notebook</MenuItem>
+            <MenuItem onClick={() => {}}>Save Notebook</MenuItem>
+            <hr />
+            <MenuItem onClick={() => {}}>Download</MenuItem>
+          </Menu>
+          <Menu text="Page">
+            <MenuItem onClick={() => {}}>Run Page</MenuItem>
+            <hr />
+            <MenuItem onClick={() => {}}>Reset Page</MenuItem>
+            <MenuItem onClick={() => {}}>Run and Reset Page</MenuItem>
+            <hr />
+            <MenuItem onClick={() => {}}>Remove Page</MenuItem>
+          </Menu>
+          <Menu text="Entry">
+            <MenuItem onClick={() => {}}>Run Entry</MenuItem>
+            <MenuItem onClick={() => {}}>Clear Entry</MenuItem>
+            <hr />
+            <MenuItem onClick={() => {}}>New Entry Above</MenuItem>
+            <MenuItem onClick={() => {}}>New Entry Below</MenuItem>
+            <hr />
+            <MenuItem onClick={() => {}}>Move Entry Up</MenuItem>
+            <MenuItem onClick={() => {}}>Move Entry Down</MenuItem>
+            <hr />
+            <MenuItem onClick={() => {}}>Remove Entry</MenuItem>
+          </Menu>
+          <Menu text="Help">
+            <MenuItem onClick={() => {}}>Documentation</MenuItem>
+            <hr />
+            <MenuItem onClick={() => {}}>Keyboard Shortcuts</MenuItem>
+            <MenuItem onClick={() => {}}>Markdown Reference</MenuItem>
+            <hr />
+            <MenuItem onClick={() => {}}>About JS Notebook</MenuItem>
+          </Menu>
+        </MenuGroup>
       </Navbar>
       <Pages />
     </div>
