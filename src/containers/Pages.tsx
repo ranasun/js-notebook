@@ -1,5 +1,5 @@
 import Tab from '../components/Tab';
-import TabContent from '../features/Page/TabContent';
+import TabPanel from '../components/TabPanel';
 import AddPageButton from '../components/AddPageButton';
 import type { RootState } from '../app/store';
 import { useSelector, useDispatch } from 'react-redux';
@@ -18,15 +18,17 @@ const Pages = () => {
 
   return (
     <main className="container mx-auto py-4 pt-24">
-      <section className="flex flex-wrap border-l border-l-black">
-        {data.map(({ pageId, title }) => (
+      <section className="flex flex-wrap border-l border-l-neutral-400">
+        {data.map(({ pageId, title }, i) => (
           <Tab
             key={pageId}
             title={title}
             isActive={active === pageId}
             onClick={() => dispatch(setActivePage(pageId))}
             onDoubleClick={() => dispatch(renamePage({ pageId, title }))}
-            onRemove={() => dispatch(removePage(pageId))}
+            onRemove={() => {
+              dispatch(removePage(pageId));
+            }}
           />
         ))}
         <AddPageButton onClick={() => dispatch(addBlankPage())} />
@@ -36,11 +38,11 @@ const Pages = () => {
           const props = {
             key: pageId,
             index: pageId,
-            active: active,
+            active: active === pageId,
             entries: entries,
             order: order,
           };
-          return <TabContent {...props} />;
+          return <TabPanel {...props} />;
         })}
       </section>
     </main>

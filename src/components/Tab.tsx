@@ -22,14 +22,14 @@ const Tab: React.FC<TabProps> = ({
     'select-none',
     'border-t',
     'border-r',
-    'border-r-gray-700',
+    'border-r-gray-400',
     'px-8',
     'py-2',
     'relative',
     'flex',
     'items-center',
   ];
-  const inactive = [...initial, 'border-t-gray-700', 'bg-neutral-300'].join(
+  const inactive = [...initial, 'border-t-gray-400', 'bg-neutral-300'].join(
     ' '
   );
   const active = [
@@ -40,6 +40,11 @@ const Tab: React.FC<TabProps> = ({
     'bg-white',
   ].join(' ');
 
+  const handleRemove = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onRemove();
+  };
+
   return (
     <div
       className={isActive ? active : inactive}
@@ -48,7 +53,10 @@ const Tab: React.FC<TabProps> = ({
     >
       <span>{title}</span>
       {isActive && (
-        <span className="cursor-pointer absolute right-2" onClick={onRemove}>
+        <span
+          className="cursor-pointer absolute right-2"
+          onClick={handleRemove}
+        >
           <Cancel fontSize={10} strokeWidth={2} color="grey" />
         </span>
       )}
