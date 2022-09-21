@@ -25,10 +25,11 @@ const Pages = () => {
             title={title}
             isActive={active === pageId}
             onClick={() => dispatch(setActivePage(pageId))}
-            onDoubleClick={() => dispatch(renamePage({ pageId, title }))}
-            onRemove={() => {
-              dispatch(removePage(pageId));
+            onDoubleClick={() => {
+              const newTitle = prompt('Enter new title', title);
+              if (newTitle) dispatch(renamePage({ pageId, title: newTitle }));
             }}
+            onRemove={() => dispatch(removePage(pageId))}
           />
         ))}
         <AddPageButton onClick={() => dispatch(addBlankPage())} />
