@@ -1,6 +1,7 @@
 import Tab from '../components/Tab';
 import TabPanel from '../components/TabPanel';
 import AddPageButton from '../components/AddPageButton';
+import Entry from '../containers/Entry';
 import type { RootState } from '../app/store';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -36,14 +37,23 @@ const Pages = () => {
       </section>
       <section>
         {data.map(({ pageId, entries, order }) => {
-          const props = {
-            key: pageId,
-            index: pageId,
-            active: active === pageId,
-            entries: entries,
-            order: order,
-          };
-          return <TabPanel {...props} />;
+          return (
+            <TabPanel key={pageId} active={active === pageId}>
+              {order.map((id, i) => {
+                const { index, content, type, entryId } = entries[id];
+                return (
+                  <Entry
+                    index={index}
+                    key={entryId}
+                    entryId={entryId}
+                    pageId={pageId}
+                    content={content}
+                    type={type}
+                  />
+                );
+              })}
+            </TabPanel>
+          );
         })}
       </section>
     </main>

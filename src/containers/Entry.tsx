@@ -20,11 +20,10 @@ import {
   Trash,
   PlayOutline,
 } from 'iconoir-react';
-import EntryEditor from '../features/Entry/EntryEditor';
-import EntryButton from '../features/Entry/EntryButton';
-import CodePreview from '../features/Entry/EntryPreview/CodePreview';
-import TextPreview from '../features/Entry/EntryPreview/TextPreview';
-import './style.css';
+import EntryEditor from './EntryEditor';
+import EntryButton from './EntryButton';
+import CodePreview from './CodePreview';
+import TextPreview from './TextPreview';
 
 interface EntryProp {
   index: number;
@@ -144,8 +143,6 @@ const Entry: React.FC<EntryProp> = ({
     setHasFocus(false);
   }
 
-  const className = `entry-container ${hasFocus ? 'focus' : ''}`;
-
   const iconProps = {
     color: 'gray',
     fontSize: 12,
@@ -154,15 +151,19 @@ const Entry: React.FC<EntryProp> = ({
 
   return (
     <div
-      className={className}
+      className={`relative mt-1 border-l-[6px] ${
+        hasFocus ? 'border-l-slate-300' : 'border-l-transparent'
+      }`}
       tabIndex={index}
       onFocus={onFocus}
       onBlur={onBlur}
       onDoubleClick={handleDoubleClick}
     >
-      <div className="entry-block">
-        <div className="entry-id">{!isMarkdown && `[${index}]:`}</div>
-        <div className="editor-preview">
+      <div className="flex items-start min-h-[47px]">
+        <div className="w-[50px] mt-[5px] mr-[10px] mb-0 ml-0 text-right font-mono text-xs">
+          {!isMarkdown && `[${index}]:`}
+        </div>
+        <div className=" w-full">
           {!isMarkdown && (
             <EntryEditor
               ref={ref}
@@ -186,7 +187,7 @@ const Entry: React.FC<EntryProp> = ({
         </div>
       </div>
       <div
-        className="button-container"
+        className="absolute top-[2px] right-[2px] flex flex-row gap-[4px]"
         style={{ display: inFocus === entryId ? 'flex' : 'none' }}
       >
         <EntryButton onClick={toggleEditorType}>

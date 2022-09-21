@@ -1,7 +1,0 @@
-.code-editor {
-    border: 1px solid #eee;
-}
-
-.code-editor:focus {
-    outline: 1px solid blue;
-}
