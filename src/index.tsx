@@ -10,11 +10,18 @@ let persistor = persistStore(store);
 
 const root = createRoot(document.getElementById('root') as Element);
 root.render(
-    <StrictMode>
-        <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-                <App />
-            </PersistGate>
-        </Provider>
-    </StrictMode>
+  <StrictMode>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
+    </Provider>
+  </StrictMode>
 );
+
+// expose store when run in Cypress
+// @ts-ignore
+if (window.Cypress) {
+  // @ts-ignore
+  window.store = store;
+}
