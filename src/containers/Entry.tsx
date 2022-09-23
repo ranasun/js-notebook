@@ -151,6 +151,8 @@ const Entry: React.FC<EntryProp> = ({
 
   return (
     <div
+      id={entryId}
+      data-cy={`entry`}
       className={`relative mt-1 border-l-[6px] ${
         hasFocus ? 'border-l-slate-300' : 'border-l-transparent'
       }`}
@@ -192,28 +194,28 @@ const Entry: React.FC<EntryProp> = ({
       >
         <EntryButton onClick={toggleEditorType}>
           {type === 'code' ? (
-            <CodeBracketsSquare {...iconProps} />
+            <CodeBracketsSquare data-cy="toggle-entry-type" {...iconProps} />
           ) : (
-            <TextAlt {...iconProps} />
+            <TextAlt data-cy="toggle-entry-type" {...iconProps} />
           )}
         </EntryButton>
         <EntryButton onClick={onSubmit}>
-          <PlayOutline {...iconProps} />
+          <PlayOutline data-cy="submit-entry" {...iconProps} />
         </EntryButton>
         <EntryButton onClick={handleMoveUp}>
-          <ArrowUp {...iconProps} />
+          <ArrowUp data-cy="move-entry-up" {...iconProps} />
         </EntryButton>
         <EntryButton onClick={handleMoveDown}>
-          <ArrowDown {...iconProps} />
+          <ArrowDown data-cy="move-entry-down" {...iconProps} />
         </EntryButton>
         <EntryButton onClick={handleAddAbove}>
-          <Upload {...iconProps} />
+          <Upload data-cy="add-entry-above" {...iconProps} />
         </EntryButton>
         <EntryButton onClick={handleAddBelow}>
-          <Download {...iconProps} />
+          <Download data-cy="add-entry-below" {...iconProps} />
         </EntryButton>
         <EntryButton onClick={handleRemove}>
-          <Trash {...iconProps} />
+          <Trash data-cy="remove-entry" {...iconProps} />
         </EntryButton>
       </div>
     </div>

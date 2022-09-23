@@ -74,6 +74,7 @@ const EntryEditor: React.FC<EditorProps> = forwardRef(
 
     return (
       <CodeMirror
+        data-cy="editor"
         ref={ref}
         className="code-editor"
         value={content}

@@ -74,57 +74,58 @@ const html = `
 `;
 
 interface CodePreviewProp {
-    entryId: string;
-    prev: string;
-    code: string;
-    error: string;
+  entryId: string;
+  prev: string;
+  code: string;
+  error: string;
 }
 
 const CodePreview: React.FC<CodePreviewProp> = ({
-    entryId,
-    prev,
-    code,
-    error,
+  entryId,
+  prev,
+  code,
+  error,
 }) => {
-    const iframe = useRef<any>();
-    const [height, setHeight] = useState('');
+  const iframe = useRef<any>();
+  const [height, setHeight] = useState('');
 
-    useEffect(() => {
-        setHeight('0px');
-        iframe.current.srcdoc = html;
-        setTimeout(() => {
-            iframe.current.contentWindow.postMessage(
-                { entryId, prev, code, error },
-                '*'
-            );
-        }, 1);
-    }, [code, error]);
+  useEffect(() => {
+    setHeight('0px');
+    iframe.current.srcdoc = html;
+    setTimeout(() => {
+      iframe.current.contentWindow.postMessage(
+        { entryId, prev, code, error },
+        '*'
+      );
+    }, 1);
+  }, [code, error]);
 
-    useEffect(() => {
-        window.addEventListener('message', listener, false);
+  useEffect(() => {
+    window.addEventListener('message', listener, false);
 
-        return () => {
-            window.removeEventListener('message', listener, false);
-        };
-    }, [code]);
+    return () => {
+      window.removeEventListener('message', listener, false);
+    };
+  }, [code]);
 
-    function listener(event: any) {
-        const { data } = event;
-        if (data.id === entryId && Object.hasOwn(data, 'height')) {
-            setHeight(data.height + 'px');
-        }
+  function listener(event: any) {
+    const { data } = event;
+    if (data.id === entryId && Object.hasOwn(data, 'height')) {
+      setHeight(data.height + 'px');
     }
+  }
 
-    return (
-        <iframe
-            ref={iframe}
-            style={{ border: 0, marginTop: '5px' }}
-            sandbox="allow-scripts"
-            srcDoc={html}
-            height={height}
-            width="100%"
-        ></iframe>
-    );
+  return (
+    <iframe
+      data-cy="code-preview"
+      ref={iframe}
+      style={{ border: 0, marginTop: '5px' }}
+      sandbox="allow-scripts"
+      srcDoc={html}
+      height={height}
+      width="100%"
+    ></iframe>
+  );
 };
 
 export default CodePreview;

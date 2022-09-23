@@ -7,7 +7,7 @@ interface TextPreviewProps {
 
 const TextPreview: React.FC<TextPreviewProps> = ({ children }) => {
   return (
-    <div className="markdown-body">
+    <div className="markdown-body" data-cy="text-preview">
       <Markdown>{children}</Markdown>
     </div>
   );
