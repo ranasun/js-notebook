@@ -16,30 +16,6 @@ const Tab: React.FC<TabProps> = ({
   onDoubleClick,
   onRemove,
 }) => {
-  const initial = [
-    'font-mono',
-    'text-xs',
-    'select-none',
-    'border-t',
-    'border-r',
-    'border-r-gray-400',
-    'px-8',
-    'py-2',
-    'relative',
-    'flex',
-    'items-center',
-  ];
-  const inactive = [...initial, 'border-t-gray-400', 'bg-neutral-300'].join(
-    ' '
-  );
-  const active = [
-    ...initial,
-    'border-t-4',
-    'border-t-orange-400',
-    'pt-1',
-    'bg-white',
-  ].join(' ');
-
   const handleRemove = (e: React.MouseEvent) => {
     e.stopPropagation();
     onRemove();
@@ -47,7 +23,11 @@ const Tab: React.FC<TabProps> = ({
 
   return (
     <div
-      className={isActive ? active : inactive}
+      className={`font-mono text-xs select-none relative border-t border-r border-r-gray-400 px-8 py-[6px] flex items-center ${
+        isActive
+          ? 'border-t-4 border-t-orange-400 bg-white pt-[3px]'
+          : 'border-t-gray-400 bg-neutral-300 text-neutral-700'
+      }`}
       onClick={onClick}
       onDoubleClick={onDoubleClick}
     >
