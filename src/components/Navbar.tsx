@@ -6,7 +6,10 @@ interface Props {
 
 const Navbar: React.FC<Props> = ({ children }) => {
   return (
-    <nav className="bg-white select-none shadow-md fixed w-full z-50">
+    <nav
+      className="bg-white select-none shadow-md fixed w-full z-50"
+      data-cy="navbar"
+    >
       <div>{children}</div>
     </nav>
   );

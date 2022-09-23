@@ -23,6 +23,7 @@ const Tab: React.FC<TabProps> = ({
 
   return (
     <div
+      data-cy="tab"
       className={`font-mono text-xs select-none relative border-t border-r border-r-gray-400 px-8 py-[6px] flex items-center ${
         isActive
           ? 'border-t-4 border-t-orange-400 bg-white pt-[3px]'
@@ -34,6 +35,7 @@ const Tab: React.FC<TabProps> = ({
       <span>{title}</span>
       {isActive && (
         <span
+          data-cy="remove-page"
           className="cursor-pointer absolute right-2"
           onClick={handleRemove}
         >

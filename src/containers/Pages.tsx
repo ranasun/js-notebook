@@ -53,16 +53,20 @@ const Pages = () => {
 
   return (
     <main className="container mx-auto py-4 pt-24">
-      <section className="flex flex-wrap border-l border-l-neutral-400">
+      <section
+        className="flex flex-wrap border-l border-l-neutral-400"
+        data-cy="tab-items"
+      >
         {tabs}
         <div
+          data-cy="add-page"
           className="flex items-center justify-center px-2 cursor-pointer"
           onClick={() => dispatch(addBlankPage())}
         >
           <Plus color="gray" fontSize={12} strokeWidth={3} />
         </div>
       </section>
-      <section>{panels}</section>
+      <section data-cy="tab-contents">{panels}</section>
     </main>
   );
 };

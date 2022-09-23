@@ -5,7 +5,12 @@ interface MenuGroupProps {
 }
 export const MenuGroup: React.FC<MenuGroupProps> = ({ children }) => {
   return (
-    <div className="container mx-auto flex text-sm font-light">{children}</div>
+    <div
+      className="container mx-auto flex text-sm font-light"
+      data-cy="menu-group"
+    >
+      {children}
+    </div>
   );
 };
 
