@@ -5,8 +5,20 @@ import Pages from '../containers/Pages';
 import './App.css';
 import { SunLight } from 'iconoir-react';
 import { MenuGroup, Menu, MenuItem } from '../components/Menu';
+import { useSelector, useDispatch } from 'react-redux';
+import { addBlankPage, removePage, renamePage } from './rootReducer';
+import type { RootState } from '../app/store';
 
 const App = () => {
+  const { pages, order, active } = useSelector((state: RootState) => state);
+  const dispatch = useDispatch();
+
+  const handleRenamePage = () => {
+    const title = pages[active].title;
+    const newTitle = prompt('Enter new title', title);
+    if (newTitle) dispatch(renamePage({ pageId: active, title: newTitle }));
+  };
+
   return (
     <div className="dark">
       <Navbar>
@@ -28,7 +40,9 @@ const App = () => {
         <hr />
         <MenuGroup>
           <Menu text="File">
-            <MenuItem onClick={() => {}}>New Page</MenuItem>
+            <MenuItem onClick={() => dispatch(addBlankPage())}>
+              New Page
+            </MenuItem>
             <hr />
             <MenuItem onClick={() => {}}>New Notebook</MenuItem>
             <MenuItem onClick={() => {}}>Save Notebook</MenuItem>
@@ -37,11 +51,14 @@ const App = () => {
           </Menu>
           <Menu text="Page">
             <MenuItem onClick={() => {}}>Run Page</MenuItem>
+            <MenuItem onClick={handleRenamePage}>Rename Page</MenuItem>
             <hr />
             <MenuItem onClick={() => {}}>Reset Page</MenuItem>
             <MenuItem onClick={() => {}}>Run and Reset Page</MenuItem>
             <hr />
-            <MenuItem onClick={() => {}}>Remove Page</MenuItem>
+            <MenuItem onClick={() => dispatch(removePage(active))}>
+              Remove Page
+            </MenuItem>
           </Menu>
           <Menu text="Entry">
             <MenuItem onClick={() => {}}>Run Entry</MenuItem>
