@@ -10,8 +10,6 @@ import {
   EntryType,
 } from '../common/types';
 
-// import Entry from '../features/Entry';
-
 const initialState: AppState = {
   pages: {
     s7uuwdgo: {
