@@ -1,111 +1,131 @@
 describe('Entry', () => {
   it('shows initial entry', () => {
-    cy.visit('/');
-    cy.get('[data-cy=entry]')
+    cy.visit('/')
+      .get('[data-cy=entry]')
       .should('be.visible')
+      .should('have.length', 1)
       .within(() => {
-        cy.get('[data-cy=editor]').should('be.visible').should('have.text', '');
-        cy.get('[data-cy=code-preview]').should('not.exist');
-        cy.get('[data-cy=text-preview]').should('not.exist');
+        cy.get('[data-cy=editor]')
+          .should('be.visible')
+          .should('have.text', '')
+          .get('[data-cy=code-preview]')
+          .should('not.exist')
+          .get('[data-cy=text-preview]')
+          .should('not.exist');
       });
-  });
-
-  it('can use import statements', () => {
-    cy.intercept('*esbuild*').as('esbuild');
-
-    cy.get('[data-cy=entry]').within(() => {
-      cy.get('[data-cy=editor]')
-        .should('be.visible')
-        .type('import React from "react"{shift}{enter}');
-    });
-
-    cy.wait('@esbuild').then((a) => {
-      cy.wrap(a.response).should('have.property', 'statusCode', 200);
-    });
   });
 
   it('creates a new entry on submit', () => {
-    cy.wait(1000)
+    cy.visit('/')
+      .get('[data-cy=editor]')
+      .should('be.visible')
+      .type('console.log("It works"){shift}{enter}')
+      .get('[data-cy=editor]')
+      .should('have.length', 2);
+  });
+
+  it('can use import statements', () => {
+    cy.visit('/')
+      .intercept('*esbuild*')
+      .as('esbuild')
       .get('[data-cy=entry]')
-      .last()
       .within(() => {
-        cy.get('[data-cy=editor]').should('be.visible').should('have.text', '');
-      });
+        cy.get('[data-cy=editor]')
+          .should('be.visible')
+          .type('import React from "react"{shift}{enter}');
+      })
+      .wait('@esbuild')
+      .then((a) => {
+        cy.wrap(a.response).should('have.property', 'statusCode', 200);
+      })
+      .get('[data-cy=entry]')
+      .should('have.length', 2);
   });
 
   it('displays markdown', () => {
-    cy.get('[data-cy=entry]')
-      .last()
-      .within(() => {
-        cy.get('[data-cy="toggle-entry-type"]').click();
-      });
-
-    cy.get('[data-cy=entry] [data-cy=editor]')
-      .last()
+    cy.visit('/')
+      .get('[data-cy=entry]')
+      .should('have.length', 1)
+      .get('[data-cy="toggle-entry-type"]')
+      .click()
+      .get('[data-cy=editor]')
       .type('### Title{shift}{enter}')
-      .then(() => {
-        cy.get('[data-cy=text-preview').contains('Title');
-      });
+      .get('[data-cy=text-preview')
+      .should('have.html', '<h3 id="title">Title</h3>');
   });
 
   it('can move entry up', () => {
-    cy.get('[data-cy=entry]')
+    cy.visit('/')
+      .get('[data-cy=editor]')
+      .should('have.length', 1)
+      .type('1{shift}{enter}')
+      .get('[data-cy=editor]')
+      .should('have.length', 2)
+      .get('[data-cy=move-entry-up]')
       .last()
-      .within(() => {
-        cy.get('[data-cy=editor]').type('test entry move');
-        cy.get('[data-cy=move-entry-up]').click().click().click();
-      });
-    cy.get('[data-cy=editor]').first().should('have.text', 'test entry move');
+      .click()
+      .get('[data-cy=editor]')
+      .first()
+      .should('have.text', '')
+      .get('[data-cy=editor]')
+      .last()
+      .should('have.text', '1');
   });
 
   it('can move entry down', () => {
-    cy.get('[data-cy=entry]')
+    cy.visit('/')
+      .get('[data-cy=editor]')
+      .should('have.length', 1)
+      .type('1{shift}{enter}')
+      .get('[data-cy=editor]')
+      .should('have.length', 2)
+      .get('[data-cy=editor]')
       .first()
-      .within(() => {
-        cy.get('[data-cy=move-entry-down]').click().click().click();
-      });
-    cy.get('[data-cy=editor]').last().should('have.text', 'test entry move');
+      .click()
+      .get('[data-cy=move-entry-down]')
+      .first()
+      .click()
+      .get('[data-cy=editor]')
+      .first()
+      .should('have.text', '')
+      .get('[data-cy=editor]')
+      .last()
+      .should('have.text', '1');
   });
 
   it('can add new entry above', () => {
-    cy.get('[data-cy=entry]')
+    cy.visit('/')
+      .get('[data-cy=editor]')
+      .type('First entry')
+      .get('[data-cy=add-entry-above]')
+      .click()
+      .get('[data-cy=editor]')
+      .should('have.length', 2)
       .first()
-      .within(() => {
-        cy.get('[data-cy=editor]')
-          .should('have.text', 'import React from "react"')
-          .click();
-        cy.get('[data-cy=add-entry-above]').click();
-      });
-    cy.get('[data-cy=editor]').first().should('have.text', '');
+      .should('have.text', '');
   });
 
   it('can add new entry below', () => {
-    cy.get('[data-cy=entry]')
+    cy.visit('/')
+      .get('[data-cy=editor]')
+      .type('First entry')
+      .get('[data-cy=add-entry-below]')
+      .click()
+      .get('[data-cy=editor]')
+      .should('have.length', 2)
       .last()
-      .within(() => {
-        cy.get('[data-cy=editor]')
-          .should('have.text', 'test entry move')
-          .click();
-        cy.get('[data-cy=add-entry-below]').click();
-      });
-    cy.get('[data-cy=editor]').last().should('have.text', '');
+      .should('have.text', '');
   });
 
   it('can remove an entry', () => {
-    cy.get('[data-cy=entry]').should('have.length', 5);
-    cy.get('[data-cy=entry]')
-      .first()
-      .within(() => {
-        cy.get('[data-cy=editor]').click();
-        cy.get('[data-cy=remove-entry]').click();
-      });
-    cy.get('[data-cy=entry]')
+    cy.visit('/')
+      .get('[data-cy=editor]')
+      .type('{shift}{enter}')
+      .get('[data-cy=remove-entry]')
+      .should('have.length', 2)
       .last()
-      .within(() => {
-        cy.get('[data-cy=editor]').click();
-        cy.get('[data-cy=remove-entry]').click();
-      });
-
-    cy.get('[data-cy=entry]').should('have.length', 3);
+      .click()
+      .get('[data-cy=remove-entry]')
+      .should('have.length', 1);
   });
 });
