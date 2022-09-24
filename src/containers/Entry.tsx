@@ -192,29 +192,29 @@ const Entry: React.FC<EntryProp> = ({
         className="absolute top-[6px] right-[2px] flex flex-row gap-[4px]"
         style={{ display: inFocus === entryId ? 'flex' : 'none' }}
       >
-        <EntryButton onClick={toggleEditorType}>
+        <EntryButton onClick={toggleEditorType} title="Toggle entry type">
           {type === 'code' ? (
             <CodeBracketsSquare data-cy="toggle-entry-type" {...iconProps} />
           ) : (
             <TextAlt data-cy="toggle-entry-type" {...iconProps} />
           )}
         </EntryButton>
-        <EntryButton onClick={onSubmit}>
+        <EntryButton onClick={onSubmit} title="Run">
           <PlayOutline data-cy="submit-entry" {...iconProps} />
         </EntryButton>
-        <EntryButton onClick={handleMoveUp}>
+        <EntryButton onClick={handleMoveUp} title="Move up">
           <ArrowUp data-cy="move-entry-up" {...iconProps} />
         </EntryButton>
-        <EntryButton onClick={handleMoveDown}>
+        <EntryButton onClick={handleMoveDown} title="Move down">
           <ArrowDown data-cy="move-entry-down" {...iconProps} />
         </EntryButton>
-        <EntryButton onClick={handleAddAbove}>
+        <EntryButton onClick={handleAddAbove} title="Add entry above">
           <Upload data-cy="add-entry-above" {...iconProps} />
         </EntryButton>
-        <EntryButton onClick={handleAddBelow}>
+        <EntryButton onClick={handleAddBelow} title="Add entry below">
           <Download data-cy="add-entry-below" {...iconProps} />
         </EntryButton>
-        <EntryButton onClick={handleRemove}>
+        <EntryButton onClick={handleRemove} title="Remove entry">
           <Trash data-cy="remove-entry" {...iconProps} />
         </EntryButton>
       </div>
