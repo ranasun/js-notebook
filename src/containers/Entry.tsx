@@ -53,11 +53,11 @@ const Entry: React.FC<EntryProp> = ({
   const dispatch = useDispatch();
   const ref = React.createRef<any>();
 
-  useEffect(() => {
-    if (inFocus === entryId && ref.current.view) {
-      ref.current.view.focus();
-    }
-  }, [inFocus]);
+  // useEffect(() => {
+  //   if (inFocus === entryId && ref.current.view) {
+  //     ref.current.view.focus();
+  //   }
+  // }, [inFocus]);
 
   function toggleEditorType() {
     dispatch(
@@ -161,11 +161,11 @@ const Entry: React.FC<EntryProp> = ({
       onBlur={onBlur}
       onDoubleClick={handleDoubleClick}
     >
-      <div className="flex items-start min-h-[47px]">
+      <div className="flex items-start">
         <div className="w-[50px] mt-[5px] mr-[10px] mb-0 ml-0 text-right font-mono text-xs">
           {!isMarkdown && `[${index}]:`}
         </div>
-        <div className=" w-full">
+        <div className=" w-full py-1">
           {!isMarkdown && (
             <EntryEditor
               ref={ref}
