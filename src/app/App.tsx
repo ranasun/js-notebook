@@ -1,6 +1,4 @@
-import Logo from '../components/Logo';
 import Navbar from '../components/Navbar';
-import Notebook from '../components/Notebook';
 import Pages from '../containers/Pages';
 import './App.css';
 import { SunLight } from 'iconoir-react';
@@ -8,13 +6,12 @@ import { MenuGroup, Menu, MenuItem } from '../components/Menu';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   setState,
-  resetState,
   addBlankPage,
   removePage,
   renamePage,
   renameNotebook,
 } from './rootReducer';
-import type { RootState } from '../app/store';
+import { RootState, persistor } from '../app/store';
 import { downloadJSON } from '../common/utils';
 import { useRef } from 'react';
 
@@ -55,6 +52,12 @@ const App = () => {
     if (newTitle) dispatch(renameNotebook(newTitle));
   };
 
+  const onNewNotebook = () => {
+    persistor.purge().then(() => {
+      location.reload();
+    });
+  };
+
   return (
     <div className="dark">
       <input
@@ -86,9 +89,7 @@ const App = () => {
         <hr />
         <MenuGroup>
           <Menu text="File">
-            <MenuItem onClick={() => dispatch(resetState())}>
-              New Notebook
-            </MenuItem>
+            <MenuItem onClick={onNewNotebook}>New Notebook</MenuItem>
 
             <MenuItem onClick={onOpenNotebook}>Open Notebook</MenuItem>
             <hr />

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { PURGE } from 'redux-persist';
 import { generateId } from '../common/utils';
 import {
   Page,
@@ -42,14 +43,6 @@ export const appSlice = createSlice({
   reducers: {
     setState: (state, action: PayloadAction<AppState>) => {
       const { pages, active, order, pageCount, title } = action.payload;
-      state.pages = pages;
-      state.active = active;
-      state.order = order;
-      state.pageCount = pageCount;
-      state.title = title;
-    },
-    resetState: (state) => {
-      const { pages, active, order, pageCount, title } = initialState;
       state.pages = pages;
       state.active = active;
       state.order = order;
@@ -209,6 +202,9 @@ export const appSlice = createSlice({
       state.pages[pageId].codes[entryId] = code;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(PURGE, () => initialState); // THIS LINE
+  },
 });
 
 function addDefaultEntry(state: AppState, pageId: string, index: number) {
@@ -227,7 +223,6 @@ function addDefaultEntry(state: AppState, pageId: string, index: number) {
 
 export const {
   setState,
-  resetState,
   renameNotebook,
   addBlankPage,
   addPage,
