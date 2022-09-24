@@ -189,7 +189,7 @@ const Entry: React.FC<EntryProp> = ({
         </div>
       </div>
       <div
-        className="absolute top-[2px] right-[2px] flex flex-row gap-[4px]"
+        className="absolute top-[6px] right-[2px] flex flex-row gap-[4px]"
         style={{ display: inFocus === entryId ? 'flex' : 'none' }}
       >
         <EntryButton onClick={toggleEditorType}>
