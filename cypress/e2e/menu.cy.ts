@@ -26,7 +26,7 @@ describe('Menu', () => {
 
   it('adds new page', () => {
     cy.visit('/')
-      .get('[data-cy=file-menu]')
+      .get('[data-cy=page-menu]')
       .click()
       .get('[data-cy=new-page-menu-item]')
       .should('be.visible')
