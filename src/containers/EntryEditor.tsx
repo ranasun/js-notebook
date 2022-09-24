@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateEntryContent, setFocus } from '../app/rootReducer';
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
-import { keymap } from '@codemirror/view';
+import { keymap, EditorView } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
 import { markdown } from '@codemirror/lang-markdown';
 import theme from './EntryEditor.theme';
@@ -21,7 +21,7 @@ const EntryEditor: React.FC<EditorProps> = forwardRef(
   ({ pageId, entryId, content, type, onSubmit, inFocus }, ref: any) => {
     const dispatch = useDispatch();
 
-    function onCreate(view: any) {
+    function onCreate(view: EditorView) {
       view.focus();
     }
 
@@ -44,19 +44,9 @@ const EntryEditor: React.FC<EditorProps> = forwardRef(
       return true;
     };
 
-    const js = [
-      javascript({ jsx: true }),
-      keymap.of([
-        {
-          key: 'Shift-Enter',
-          preventDefault: true,
-          run: runCommand,
-        },
-      ]),
-    ];
-
-    const md = [
-      markdown(),
+    const extensions = [
+      EditorView.lineWrapping,
+      type === 'code' ? javascript({ jsx: true }) : markdown(),
       keymap.of([
         {
           key: 'Shift-Enter',
@@ -79,7 +69,7 @@ const EntryEditor: React.FC<EditorProps> = forwardRef(
         className="code-editor"
         value={content}
         onFocus={onFocus}
-        extensions={type === 'code' ? js : md}
+        extensions={extensions}
         onChange={onChange}
         onCreateEditor={onCreate}
         basicSetup={setup}
