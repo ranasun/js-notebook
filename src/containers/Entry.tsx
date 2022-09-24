@@ -53,11 +53,11 @@ const Entry: React.FC<EntryProp> = ({
   const dispatch = useDispatch();
   const ref = React.createRef<any>();
 
-  // useEffect(() => {
-  //   if (inFocus === entryId && ref.current.view) {
-  //     ref.current.view.focus();
-  //   }
-  // }, [inFocus]);
+  useEffect(() => {
+    if (inFocus === entryId && ref.current?.view) {
+      ref.current.view.focus();
+    }
+  }, [inFocus]);
 
   function toggleEditorType() {
     dispatch(
