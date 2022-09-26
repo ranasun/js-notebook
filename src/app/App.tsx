@@ -81,9 +81,9 @@ const App = () => {
                 {title}
               </div>
             </div>
-            <div className="flex gap-2">
+            {/* <div className="flex gap-2">
               <SunLight strokeWidth={2} color="gray" />
-            </div>
+            </div> */}
           </div>
         </div>
         <hr />
@@ -103,7 +103,7 @@ const App = () => {
             </MenuItem>
             <MenuItem onClick={onRenamePage}>Rename Page</MenuItem>
             <hr />
-            <MenuItem onClick={() => {}}>Run Page</MenuItem>
+            {/* <MenuItem onClick={() => {}}>Run Page</MenuItem> */}
             {/* <hr />
             <MenuItem onClick={() => {}}>Reset Page</MenuItem>
             <MenuItem onClick={() => {}}>Run and Reset Page</MenuItem> */}
@@ -112,7 +112,7 @@ const App = () => {
               Remove Page
             </MenuItem>
           </Menu>
-          <Menu text="Entry">
+          {/* <Menu text="Entry">
             <MenuItem onClick={() => {}}>Run Entry</MenuItem>
             <MenuItem onClick={() => {}}>Clear Entry</MenuItem>
             <hr />
@@ -123,14 +123,33 @@ const App = () => {
             <MenuItem onClick={() => {}}>Move Entry Down</MenuItem>
             <hr />
             <MenuItem onClick={() => {}}>Remove Entry</MenuItem>
-          </Menu>
+          </Menu> */}
           <Menu text="Help">
-            <MenuItem onClick={() => {}}>Documentation</MenuItem>
+            {/* <MenuItem onClick={() => {}}>Documentation</MenuItem>
             <hr />
-            <MenuItem onClick={() => {}}>Keyboard Shortcuts</MenuItem>
-            <MenuItem onClick={() => {}}>Markdown Reference</MenuItem>
+            <MenuItem onClick={() => {}}>Keyboard Shortcuts</MenuItem> */}
+            <MenuItem
+              onClick={() => {
+                window
+                  .open(
+                    'https://www.markdownguide.org/basic-syntax/',
+                    '__blank'
+                  )
+                  ?.focus();
+              }}
+            >
+              Markdown Reference
+            </MenuItem>
             <hr />
-            <MenuItem onClick={() => {}}>About JS Notebook</MenuItem>
+            <MenuItem
+              onClick={() => {
+                window
+                  .open('https://github.com/ranasun/js-notebook', '__blank')
+                  ?.focus();
+              }}
+            >
+              About JS Notebook
+            </MenuItem>
           </Menu>
         </MenuGroup>
       </Navbar>
