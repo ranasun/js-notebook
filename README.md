@@ -1,9 +1,14 @@
 # JS Notebook
 
-A jupyter notebook clone for javascript.
+> A jupyter notebook clone for javascript.
+
+## Features
 
 - Supports import statements eg: `import React from 'react'`
-- Uses esbuild to bundle in the browser
+- Uses esbuild to bundle inside the browser
+- Toggle between javascript or markdown
+- Autosave changes
+- Ability to download and open notebook files `.jsnb`
 
 ## Installation
 
