@@ -8,6 +8,7 @@ import {
   updateEntryType,
   setFocus,
   addCode,
+  updateEntryContent,
 } from '../app/rootReducer';
 import { bundle } from '../common/bundler';
 import {
@@ -20,10 +21,10 @@ import {
   Trash,
   PlayOutline,
 } from 'iconoir-react';
-import EntryEditor from './EntryEditor';
-import EntryButton from './EntryButton';
-import CodePreview from './CodePreview';
-import TextPreview from './TextPreview';
+import EntryEditor from '../components/EntryEditor';
+import EntryButton from '../components/EntryButton';
+import CodePreview from '../components/CodePreview';
+import TextPreview from '../components/TextPreview';
 
 interface EntryProp {
   index: number;
@@ -48,7 +49,7 @@ const Entry: React.FC<EntryProp> = ({
   const [prev, setPrev] = useState('');
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
-  const [hasFocus, setHasFocus] = useState(false);
+  // const [hasFocus, setHasFocus] = useState('');
   const [isMarkdown, setIsMarkdown] = useState(false);
   const dispatch = useDispatch();
   const ref = React.createRef<any>();
@@ -137,10 +138,7 @@ const Entry: React.FC<EntryProp> = ({
   }
 
   function onFocus() {
-    setHasFocus(true);
-  }
-  function onBlur() {
-    setHasFocus(false);
+    dispatch(setFocus({ pageId, entryId }));
   }
 
   const iconProps = {
@@ -154,11 +152,10 @@ const Entry: React.FC<EntryProp> = ({
       id={entryId}
       data-cy={`entry`}
       className={`relative mt-1 border-l-[6px] ${
-        hasFocus ? 'border-l-slate-300' : 'border-l-transparent'
+        inFocus === entryId ? 'border-l-slate-300' : 'border-l-transparent'
       }`}
       tabIndex={index}
       onFocus={onFocus}
-      onBlur={onBlur}
       onDoubleClick={handleDoubleClick}
     >
       <div className="flex items-start">
@@ -169,12 +166,23 @@ const Entry: React.FC<EntryProp> = ({
           {!isMarkdown && (
             <EntryEditor
               ref={ref}
-              entryId={entryId}
-              pageId={pageId}
               content={content}
               type={type}
               onSubmit={onSubmit}
-              inFocus={inFocus}
+              onFocus={(e) => {
+                dispatch(setFocus({ pageId, entryId }));
+                const { bottom } = e.target.getBoundingClientRect();
+                if (bottom > window.innerHeight) e.target.scrollIntoView();
+              }}
+              onChange={(value) => {
+                dispatch(
+                  updateEntryContent({
+                    pageId,
+                    entryId,
+                    content: value,
+                  })
+                );
+              }}
             />
           )}
           {type === 'code' && (code || error) && (
