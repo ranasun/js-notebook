@@ -1,5 +1,6 @@
 export type EntryType = 'code' | 'text';
 export type MoveDirection = 'up' | 'down';
+export type NewEntryPosition = 'above' | 'below';
 
 export interface Entry {
   index: number;
