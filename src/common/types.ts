@@ -15,7 +15,6 @@ export interface Page {
   order: string[]; //ex: ['mm4bxyyt', 'cm6i2wa2', 'cxc34dey']
   runCount: number;
   inFocus: string;
-  codes: Record<string, string>;
 }
 
 export interface AppState {

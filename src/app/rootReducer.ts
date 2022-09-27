@@ -26,7 +26,6 @@ const initialState: AppState = {
       order: ['i5s2sryt'],
       runCount: 1,
       inFocus: 'i5s2sryt',
-      codes: {},
     },
   },
   active: 's7uuwdgo',
@@ -68,7 +67,6 @@ export const appSlice = createSlice({
         order: [entryId],
         runCount: 1,
         inFocus: entryId,
-        codes: {},
       };
 
       page.entries[entryId] = entry;
@@ -188,17 +186,6 @@ export const appSlice = createSlice({
       const { pageId, entryId } = action.payload;
       state.pages[pageId].inFocus = entryId;
     },
-    addCode: (
-      state,
-      action: PayloadAction<{
-        pageId: string;
-        entryId: string;
-        code: string;
-      }>
-    ) => {
-      const { pageId, entryId, code } = action.payload;
-      state.pages[pageId].codes[entryId] = code;
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, () => initialState); // THIS LINE
@@ -234,7 +221,6 @@ export const {
   updateEntryType,
   updateEntryContent,
   setFocus,
-  addCode,
 } = appSlice.actions;
 
 export default appSlice.reducer;
