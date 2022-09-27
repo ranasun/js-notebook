@@ -7,7 +7,6 @@ import {
   moveEntry,
   updateEntryType,
   setFocus,
-  addCode,
   updateEntryContent,
 } from '../app/rootReducer';
 import { bundle } from '../common/bundler';
@@ -44,7 +43,7 @@ const Entry: React.FC<EntryProp> = ({
   const { pages } = useSelector((state: RootState) => state);
 
   const page = pages[pageId];
-  const { inFocus, order, codes, runCount } = page;
+  const { inFocus, order, entries, runCount } = page;
 
   const [prev, setPrev] = useState('');
   const [code, setCode] = useState('');
@@ -77,7 +76,10 @@ const Entry: React.FC<EntryProp> = ({
     let bundle = '';
     for (let i = 0; i < order.length; i++) {
       if (id == order[i]) break;
-      bundle += codes[order[i]] || '';
+      const { type, content } = entries[order[i]];
+      if (type === 'code') {
+        bundle += content + '\n';
+      }
     }
 
     return bundle;
@@ -85,7 +87,6 @@ const Entry: React.FC<EntryProp> = ({
 
   async function onSubmit() {
     if (type === 'code') {
-      dispatch(addCode({ pageId, entryId, code: content + '\n' }));
       const prev = await bundle(getPastCodes(entryId));
       const output = await bundle(
         getPastCodes(entryId) +
