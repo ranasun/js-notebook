@@ -1,6 +1,4 @@
-import { forwardRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { updateEntryContent, setFocus } from '../app/rootReducer';
+import React, { forwardRef } from 'react';
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 import { keymap, EditorView } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
@@ -8,37 +6,19 @@ import { markdown } from '@codemirror/lang-markdown';
 import theme from './EntryEditor.theme';
 
 interface EditorProps {
-  pageId: string;
-  entryId: string;
+  pageId?: string;
+  entryId?: string;
   content: string;
   type: string;
   onSubmit?(code: string): void;
-  inFocus: string;
+  onFocus?(e: React.FocusEvent): void;
+  onChange?(value: string): void;
+  inFocus?: string;
   ref: any;
 }
 
 const EntryEditor: React.FC<EditorProps> = forwardRef(
-  ({ pageId, entryId, content, type, onSubmit, inFocus }, ref: any) => {
-    const dispatch = useDispatch();
-
-    function onCreate(view: EditorView) {
-      view.focus();
-    }
-
-    function onFocus() {
-      dispatch(setFocus({ pageId, entryId }));
-    }
-
-    function onChange(value: string) {
-      dispatch(
-        updateEntryContent({
-          pageId,
-          entryId,
-          content: value,
-        })
-      );
-    }
-
+  ({ content, type, onSubmit, onFocus, onChange }, ref: any) => {
     const runCommand = () => {
       onSubmit?.(content);
       return true;
@@ -71,9 +51,9 @@ const EntryEditor: React.FC<EditorProps> = forwardRef(
         onFocus={onFocus}
         extensions={extensions}
         onChange={onChange}
-        onCreateEditor={onCreate}
         basicSetup={setup}
         theme={theme}
+        autoFocus={true}
       />
     );
   }

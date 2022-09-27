@@ -24,6 +24,9 @@ describe('Menu', () => {
       .should('not.be.visible');
   });
 
+  /***
+   * PAGE MENU
+   */
   it('adds new page', () => {
     cy.visit('/')
       .get('[data-cy=page-menu]')
@@ -61,5 +64,117 @@ describe('Menu', () => {
       .click()
       .get('[data-cy=tab]')
       .should('have.text', 'MyPage');
+  });
+
+  /***
+   * ENTRY MENU
+   */
+  it('adds new entry above currently focused entry', () => {
+    cy.visit('/')
+      .get('[data-cy=editor]')
+      .should('have.length', 1)
+      .type('new entry should be above')
+      .get('[data-cy=entry-menu]')
+      .click()
+      .get('[data-cy=new-entry-above-menu-item]')
+      .should('be.visible')
+      .click()
+      .get('[data-cy=editor]')
+      .should('have.length', 2)
+      .last()
+      .should('have.text', 'new entry should be above');
+  });
+
+  it('adds new entry below currently focused entry', () => {
+    cy.visit('/')
+      .get('[data-cy=editor]')
+      .should('have.length', 1)
+      .type('new entry should be below')
+      .get('[data-cy=entry-menu]')
+      .click()
+      .get('[data-cy=new-entry-below-menu-item]')
+      .should('be.visible')
+      .click()
+      .get('[data-cy=editor]')
+      .should('have.length', 2)
+      .last()
+      .should('have.text', '');
+  });
+
+  it('moves focused entry up', () => {
+    cy.visit('/')
+      .get('[data-cy=editor]')
+      .should('have.length', 1)
+      .type('this entry should be above')
+      .get('[data-cy=entry-menu]')
+      .click()
+      .get('[data-cy=new-entry-above-menu-item]')
+      .click()
+      .get('[data-cy=editor]')
+      .should('have.length', 2)
+      .last()
+      .should('have.text', 'this entry should be above')
+      .click()
+      .get('[data-cy=entry-menu]')
+      .click()
+      .get('[data-cy=move-entry-up-menu-item]')
+      .click()
+      .get('[data-cy=editor]')
+      .first()
+      .should('have.text', 'this entry should be above');
+  });
+
+  it('moves focused entry down', () => {
+    cy.visit('/')
+      .get('[data-cy=editor]')
+      .should('have.length', 1)
+      .type('this entry should be below')
+      .get('[data-cy=entry-menu]')
+      .click()
+      .get('[data-cy=new-entry-below-menu-item]')
+      .click()
+      .get('[data-cy=editor]')
+      .should('have.length', 2)
+      .first()
+      .should('have.text', 'this entry should be below')
+      .click()
+      .get('[data-cy=entry-menu]')
+      .click()
+      .get('[data-cy=move-entry-down-menu-item]')
+      .click()
+      .get('[data-cy=editor]')
+      .last()
+      .should('have.text', 'this entry should be below');
+  });
+
+  it('resets focused entry', () => {
+    cy.visit('/')
+      .get('[data-cy=editor]')
+      .should('have.length', 1)
+      .type('this text should should clear out')
+      .get('[data-cy=entry-menu]')
+      .click()
+      .get('[data-cy=reset-entry-menu-item]')
+      .click()
+      .get('[data-cy=editor]')
+      .should('have.text', '');
+  });
+
+  it('removes focused entry', () => {
+    cy.visit('/')
+      .get('[data-cy=editor]')
+      .should('have.length', 1)
+      .get('[data-cy=entry-menu]')
+      .click()
+      .get('[data-cy=new-entry-below-menu-item]')
+      .click()
+      .get('[data-cy=editor]')
+      .should('have.length', 2)
+      .get('[data-cy=entry-menu]')
+      .click()
+      .get('[data-cy=remove-entry-menu-item]')
+      .click()
+      .get('[data-cy=editor]')
+      .should('have.length', '1');
   });
 });

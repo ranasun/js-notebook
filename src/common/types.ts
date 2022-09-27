@@ -1,5 +1,6 @@
 export type EntryType = 'code' | 'text';
 export type MoveDirection = 'up' | 'down';
+export type NewEntryPosition = 'above' | 'below';
 
 export interface Entry {
   index: number;
@@ -15,7 +16,6 @@ export interface Page {
   order: string[]; //ex: ['mm4bxyyt', 'cm6i2wa2', 'cxc34dey']
   runCount: number;
   inFocus: string;
-  codes: Record<string, string>;
 }
 
 export interface AppState {

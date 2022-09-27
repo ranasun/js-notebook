@@ -10,10 +10,16 @@ import {
   removePage,
   renamePage,
   renameNotebook,
+  addEntry,
+  moveEntry,
+  removeEntry,
+  updateEntryContent,
+  updateEntryType,
 } from './rootReducer';
 import { RootState, persistor } from '../app/store';
 import { downloadJSON } from '../common/utils';
 import { useRef } from 'react';
+import { MoveDirection, NewEntryPosition } from '../common/types';
 
 const App = () => {
   const state = useSelector((state: RootState) => state);
@@ -56,6 +62,54 @@ const App = () => {
     persistor.purge().then(() => {
       location.reload();
     });
+  };
+
+  const addNewEntry = (position: NewEntryPosition) => {
+    dispatch(
+      addEntry({
+        pageId: active,
+        entryId: pages[active].inFocus,
+        position,
+      })
+    );
+  };
+
+  const moveFocusedEntry = (direction: MoveDirection) => {
+    dispatch(
+      moveEntry({
+        pageId: active,
+        entryId: pages[active].inFocus,
+        direction,
+      })
+    );
+  };
+
+  const removeFocusedEntry = () => {
+    dispatch(
+      removeEntry({
+        pageId: active,
+        entryId: pages[active].inFocus,
+      })
+    );
+  };
+
+  const resetFocusedEntry = () => {
+    const pageId = active;
+    const entryId = pages[active].inFocus;
+    dispatch(
+      updateEntryContent({
+        pageId,
+        entryId,
+        content: '',
+      })
+    );
+    dispatch(
+      updateEntryType({
+        pageId,
+        entryId,
+        type: 'code',
+      })
+    );
   };
 
   return (
@@ -112,18 +166,42 @@ const App = () => {
               Remove Page
             </MenuItem>
           </Menu>
-          {/* <Menu text="Entry">
-            <MenuItem onClick={() => {}}>Run Entry</MenuItem>
-            <MenuItem onClick={() => {}}>Clear Entry</MenuItem>
+          <Menu text="Entry">
+            <MenuItem
+              onClick={() => {
+                addNewEntry('above');
+              }}
+            >
+              New Entry Above
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                addNewEntry('below');
+              }}
+            >
+              New Entry Below
+            </MenuItem>
             <hr />
-            <MenuItem onClick={() => {}}>New Entry Above</MenuItem>
-            <MenuItem onClick={() => {}}>New Entry Below</MenuItem>
+            <MenuItem
+              onClick={() => {
+                moveFocusedEntry('up');
+              }}
+            >
+              Move Entry Up
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                moveFocusedEntry('down');
+              }}
+            >
+              Move Entry Down
+            </MenuItem>
             <hr />
-            <MenuItem onClick={() => {}}>Move Entry Up</MenuItem>
-            <MenuItem onClick={() => {}}>Move Entry Down</MenuItem>
+            {/* <MenuItem onClick={() => {}}>Run Entry</MenuItem> */}
+            <MenuItem onClick={resetFocusedEntry}>Reset Entry</MenuItem>
             <hr />
-            <MenuItem onClick={() => {}}>Remove Entry</MenuItem>
-          </Menu> */}
+            <MenuItem onClick={removeFocusedEntry}>Remove Entry</MenuItem>
+          </Menu>
           <Menu text="Help">
             {/* <MenuItem onClick={() => {}}>Documentation</MenuItem>
             <hr />

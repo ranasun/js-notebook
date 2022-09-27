@@ -8,6 +8,7 @@ import {
   AppState,
   MoveDirection,
   EntryType,
+  NewEntryPosition,
 } from '../common/types';
 
 const initialState: AppState = {
@@ -26,7 +27,6 @@ const initialState: AppState = {
       order: ['i5s2sryt'],
       runCount: 1,
       inFocus: 'i5s2sryt',
-      codes: {},
     },
   },
   active: 's7uuwdgo',
@@ -68,7 +68,6 @@ export const appSlice = createSlice({
         order: [entryId],
         runCount: 1,
         inFocus: entryId,
-        codes: {},
       };
 
       page.entries[entryId] = entry;
@@ -107,11 +106,17 @@ export const appSlice = createSlice({
     },
     addEntry: (
       state,
-      action: PayloadAction<{ pageId: string; index: number }>
+      action: PayloadAction<{
+        pageId: string;
+        entryId: string;
+        position: NewEntryPosition;
+      }>
     ) => {
-      const { pageId, index } = action.payload;
-      addDefaultEntry(state, pageId, index);
+      const { pageId, entryId, position } = action.payload;
+      const index = state.pages[pageId].order.indexOf(entryId);
+      addDefaultEntry(state, pageId, position === 'above' ? index : index + 1);
     },
+
     removeEntry: (
       state,
       action: PayloadAction<{ pageId: string; entryId: string }>
@@ -188,17 +193,6 @@ export const appSlice = createSlice({
       const { pageId, entryId } = action.payload;
       state.pages[pageId].inFocus = entryId;
     },
-    addCode: (
-      state,
-      action: PayloadAction<{
-        pageId: string;
-        entryId: string;
-        code: string;
-      }>
-    ) => {
-      const { pageId, entryId, code } = action.payload;
-      state.pages[pageId].codes[entryId] = code;
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, () => initialState); // THIS LINE
@@ -234,7 +228,6 @@ export const {
   updateEntryType,
   updateEntryContent,
   setFocus,
-  addCode,
 } = appSlice.actions;
 
 export default appSlice.reducer;
