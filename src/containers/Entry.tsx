@@ -106,7 +106,13 @@ const Entry: React.FC<EntryProp> = ({
     const position = order.indexOf(entryId);
 
     if (position === order.length - 1) {
-      dispatch(addEntry({ pageId, index: runCount }));
+      dispatch(
+        addEntry({
+          pageId,
+          entryId,
+          position: 'below',
+        })
+      );
     } else {
       dispatch(setFocus({ pageId, entryId: order[position + 1] }));
     }
@@ -121,13 +127,11 @@ const Entry: React.FC<EntryProp> = ({
   }
 
   function handleAddAbove() {
-    const index = order.indexOf(entryId);
-    dispatch(addEntry({ pageId, index }));
+    dispatch(addEntry({ pageId, entryId, position: 'above' }));
   }
 
   function handleAddBelow() {
-    const index = order.indexOf(entryId);
-    dispatch(addEntry({ pageId, index: index + 1 }));
+    dispatch(addEntry({ pageId, entryId, position: 'below' }));
   }
 
   function handleRemove() {

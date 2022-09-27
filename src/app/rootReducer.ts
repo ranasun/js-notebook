@@ -8,6 +8,7 @@ import {
   AppState,
   MoveDirection,
   EntryType,
+  NewEntryPosition,
 } from '../common/types';
 
 const initialState: AppState = {
@@ -105,11 +106,17 @@ export const appSlice = createSlice({
     },
     addEntry: (
       state,
-      action: PayloadAction<{ pageId: string; index: number }>
+      action: PayloadAction<{
+        pageId: string;
+        entryId: string;
+        position: NewEntryPosition;
+      }>
     ) => {
-      const { pageId, index } = action.payload;
-      addDefaultEntry(state, pageId, index);
+      const { pageId, entryId, position } = action.payload;
+      const index = state.pages[pageId].order.indexOf(entryId);
+      addDefaultEntry(state, pageId, position === 'above' ? index : index + 1);
     },
+
     removeEntry: (
       state,
       action: PayloadAction<{ pageId: string; entryId: string }>
