@@ -52,7 +52,7 @@ const Pages = () => {
   });
 
   return (
-    <main className="container mx-auto py-4 pt-24">
+    <main className="container mx-auto px-2 py-4 pt-24">
       <section
         className="flex flex-wrap border-l border-l-neutral-400"
         data-cy="tab-items"
