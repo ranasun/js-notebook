@@ -122,7 +122,7 @@ const App = () => {
         onChange={onFileUpload}
       />
       <Navbar>
-        <div className="container mx-auto">
+        <div className="container mx-auto px-2">
           <div className="flex justify-between items-center">
             <div className="flex items-center">
               <a className="font-light py-2" href="#">
