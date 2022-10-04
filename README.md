@@ -39,6 +39,7 @@ npm run cypress:open
 
 This application is built with the following technologies:
 
+- [Vite](https://vitejs.dev/)
 - [Typescript](https://www.typescriptlang.org/)
 - [React](https://reactjs.org/)
 - [Redux](https://redux.js.org/)
