@@ -1,6 +1,6 @@
 import { AppState } from '../common/types';
 
-const content: AppState = {
+const initialState: AppState = {
   pages: {
     s7uuwdgo: {
       pageId: 's7uuwdgo',
@@ -39,4 +39,4 @@ const content: AppState = {
   title: 'MyNotebook',
 };
 
-export default content;
+export default initialState;
