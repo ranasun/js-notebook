@@ -54,6 +54,14 @@ const Entry: React.FC<EntryProp> = ({
   const ref = React.createRef<any>();
 
   useEffect(() => {
+    if (type === 'text') {
+      setCode(content);
+      setError('');
+      setIsMarkdown(true);
+    }
+  }, []);
+
+  useEffect(() => {
     if (inFocus === entryId && ref.current?.view) {
       ref.current.view.focus();
     }
