@@ -10,30 +10,7 @@ import {
   EntryType,
   NewEntryPosition,
 } from '../common/types';
-
-const initialState: AppState = {
-  pages: {
-    s7uuwdgo: {
-      pageId: 's7uuwdgo',
-      title: 'Page-1',
-      entries: {
-        i5s2sryt: {
-          index: 1,
-          entryId: 'i5s2sryt',
-          content: '',
-          type: 'code',
-        },
-      },
-      order: ['i5s2sryt'],
-      runCount: 1,
-      inFocus: 'i5s2sryt',
-    },
-  },
-  active: 's7uuwdgo',
-  order: ['s7uuwdgo'],
-  pageCount: 1,
-  title: 'Untitled',
-};
+import initialState from './content';
 
 export const appSlice = createSlice({
   name: 'root',
