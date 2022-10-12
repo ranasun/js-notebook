@@ -20,6 +20,7 @@ import { RootState, persistor } from '../app/store';
 import { downloadJSON } from '../common/utils';
 import { useRef } from 'react';
 import { MoveDirection, NewEntryPosition } from '../common/types';
+import initialState from './content';
 
 const App = () => {
   const state = useSelector((state: RootState) => state);
@@ -204,8 +205,14 @@ const App = () => {
           </Menu>
           <Menu text="Help">
             {/* <MenuItem onClick={() => {}}>Documentation</MenuItem>
-            <hr />
-            <MenuItem onClick={() => {}}>Keyboard Shortcuts</MenuItem> */}
+            <hr /> */}
+            <MenuItem
+              onClick={() => {
+                dispatch(setState(initialState));
+              }}
+            >
+              Getting Started
+            </MenuItem>
             <MenuItem
               onClick={() => {
                 window
